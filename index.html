@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Tabs Saver - Save Open Tabs & Organize Playlists</title>
+  <style>
+    :root {
+      --bg: #0f0f11;
+      --card-bg: #18181b;
+      --text-main: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --accent: #ff0033;
+      --accent-blue: #3b82f6;
+      --border: #27272a;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .hero {
+      text-align: center;
+      padding: 80px 20px 40px;
+      max-width: 720px;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(255, 0, 51, 0.12);
+      color: #ff4e45;
+      border: 1px solid rgba(255, 0, 51, 0.3);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 44px;
+      font-weight: 800;
+      margin: 0 0 16px 0;
+      line-height: 1.15;
+    }
+    p.subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 900px;
+      width: 100%;
+      padding: 20px;
+    }
+    .feature-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: left;
+    }
+    .feature-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+    .feature-card h3 {
+      margin: 0 0 8px 0;
+      font-size: 18px;
+    }
+    .feature-card p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    footer {
+      margin-top: auto;
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 13px;
+      color: #71717a;
+      border-top: 1px solid var(--border);
+      width: 100%;
+    }
+    footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+      margin: 0 12px;
+    }
+    footer a:hover {
+      color: var(--text-main);
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <div class="badge">Chrome Extension</div>
+    <h1>YouTube Tabs Saver & Playlist Toolkit</h1>
+    <p class="subtitle">Scan all open YouTube tabs across browser windows, save them into playlists with 1 click, eliminate duplicate videos, and organize your collection into smart genres.</p>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📥</div>
+      <h3>Batch Tab Detection</h3>
+      <p>Instantly extracts all open video tabs (regular videos, Shorts, live streams) across single or multi-window sessions.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🧹</div>
+      <h3>Duplicate Purge</h3>
+      <p>Scans any existing playlist for duplicate entries and removes all redundant copies while keeping the original copy safe.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎌</div>
+      <h3>Smart Genre Splitting</h3>
+      <p>Accurately clusters videos into Anime & Manga, Tech, Music, Gaming, and Education playlists using AI metadata & topic analysis.</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 YouTube Tabs Saver. Contact: <a href="mailto:saad.khan955@gmail.com">saad.khan955@gmail.com</a></p>
+    <p>
+      <a href="privacy.html">Privacy Policy</a> &bull;
+      <a href="terms.html">Terms of Service</a>
+    </p>
+  </footer>
+</body>
+</html>

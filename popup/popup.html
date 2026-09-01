@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Tabs to Playlist</title>
+  <link rel="stylesheet" href="popup.css">
+  <script src="../scripts/lucide.min.js"></script>
+</head>
+<body class="theme-dark">
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-brand">
+        <img src="../icons/icon-48.png" alt="YouTube Tabs Saver Logo" class="logo-icon">
+        <div>
+          <h1 class="header-title">YouTube Toolkit</h1>
+          <span class="header-subtitle" id="authStatusText">Checking auth...</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="btnRefreshTabs" class="icon-btn" title="Refresh" aria-label="Refresh">
+          <i data-lucide="rotate-cw" style="width:14px;height:14px;"></i>
+        </button>
+        <button id="btnOpenSettings" class="icon-btn" title="Settings" aria-label="Settings">
+          <i data-lucide="settings" style="width:14px;height:14px;"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Top Feature Navigation -->
+    <nav class="feature-nav">
+      <button id="navSaveTabs" class="nav-item active">
+        <i data-lucide="download" style="width:14px;height:14px;"></i>
+        Save Open Tabs
+      </button>
+      <button id="navOrganizePlaylist" class="nav-item">
+        <i data-lucide="sparkles" style="width:14px;height:14px;"></i>
+        Clean & Organize
+      </button>
+    </nav>
+
+    <!-- Progress & Status Notification Area (Always Visible at Top) -->
+    <div id="statusNotification" class="status-box hidden">
+      <div class="status-header">
+        <span id="statusIcon" class="status-icon-box"></span>
+        <span id="statusMessage">Processing...</span>
+      </div>
+      <div id="progressBarContainer" class="progress-bar-wrapper hidden">
+        <div id="progressBarFill" class="progress-bar-fill" style="width: 0%"></div>
+      </div>
+      <div id="statusDetails" class="status-details"></div>
+      <div id="statusActionArea" class="status-actions hidden">
+        <a id="btnViewCreatedPlaylist" href="#" target="_blank" class="btn btn-success btn-sm">
+          <i data-lucide="external-link" style="width:12px;height:12px;"></i>
+          Open Playlist
+        </a>
+        <button id="btnCloseSavedTabsNow" class="btn btn-secondary btn-sm">
+          <i data-lucide="x" style="width:12px;height:12px;"></i>
+          Close Saved Tabs
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================== VIEW 1: SAVE TABS ==================== -->
+    <div id="viewSaveTabs" class="feature-view active">
+      <!-- Scope Selector & Stats Filter -->
+      <div class="filter-strip">
+        <div class="segmented-control">
+          <button id="scopeCurrentWindow" class="segment active">Current Window</button>
+          <button id="scopeAllWindows" class="segment">All Windows</button>
+        </div>
+        <div class="tabs-count-badge" id="detectedCountBadge">0 tabs</div>
+      </div>
+
+      <!-- Tabs List Card -->
+      <section class="card">
+        <div class="card-header">
+          <div class="checkbox-wrapper">
+            <input type="checkbox" id="selectAllCheckbox" checked>
+            <label for="selectAllCheckbox" class="card-subtitle">Select All (<span id="selectedCountText">0</span>)</label>
+          </div>
+          <div class="search-input-wrapper">
+            <input type="text" id="tabSearchInput" placeholder="Filter tabs..." class="search-input">
+          </div>
+        </div>
+
+        <!-- Tab items container -->
+        <div class="tab-list" id="tabListContainer"></div>
+
+        <!-- Empty State -->
+        <div id="emptyTabsState" class="empty-state hidden">
+          <div class="empty-icon">
+            <i data-lucide="video" style="width:36px;height:36px;"></i>
+          </div>
+          <h3>No YouTube Tabs Found</h3>
+          <p>Open some YouTube videos in your browser and click refresh.</p>
+          <button id="btnOpenYouTube" class="btn btn-outline btn-sm">Open YouTube</button>
+        </div>
+      </section>
+
+      <!-- Target Playlist Selection Card -->
+      <section class="card">
+        <div class="card-title-bar">
+          <h2>Target Playlist</h2>
+          <div class="mode-tabs">
+            <button class="mode-tab active" data-mode="existing">Select</button>
+            <button class="mode-tab" data-mode="new">+ New</button>
+            <button class="mode-tab" data-mode="manual">ID / URL</button>
+          </div>
+        </div>
+
+        <!-- Mode 1: Existing Playlist -->
+        <div id="modeExisting" class="mode-panel active">
+          <div id="authRequiredNotice" class="auth-box hidden">
+            <p>Sign in with Google to load your YouTube playlists</p>
+            <button id="btnSignIn" class="btn btn-google btn-sm">
+              <svg viewBox="0 0 24 24" width="14" height="14">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+              </svg>
+              Sign In with Google
+            </button>
+          </div>
+
+          <div id="playlistSelectSection" class="form-group">
+            <div class="select-with-refresh">
+              <select id="playlistSelect" class="form-control">
+                <option value="" disabled selected>Loading your playlists...</option>
+              </select>
+              <button id="btnReloadPlaylists" class="icon-btn-inline" title="Reload Playlists">
+                <i data-lucide="rotate-cw" style="width:14px;height:14px;"></i>
+              </button>
+            </div>
+            <div id="selectedPlaylistMeta" class="playlist-meta-info hidden"></div>
+          </div>
+        </div>
+
+        <!-- Mode 2: Create New Playlist -->
+        <div id="modeNew" class="mode-panel">
+          <div class="form-group">
+            <label for="newPlaylistTitle">Playlist Name</label>
+            <input type="text" id="newPlaylistTitle" placeholder="e.g. My Saved YouTube Tabs" class="form-control">
+          </div>
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label for="newPlaylistDesc">Description (Optional)</label>
+              <input type="text" id="newPlaylistDesc" placeholder="Tabs saved on..." class="form-control">
+            </div>
+            <div class="form-group flex-1">
+              <label for="newPlaylistPrivacy">Privacy</label>
+              <select id="newPlaylistPrivacy" class="form-control">
+                <option value="private" selected>Private</option>
+                <option value="unlisted">Unlisted</option>
+                <option value="public">Public</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mode 3: Manual Playlist ID / URL -->
+        <div id="modeManual" class="mode-panel">
+          <div class="form-group">
+            <label for="manualPlaylistInput">Playlist ID or URL</label>
+            <input type="text" id="manualPlaylistInput" placeholder="PLxxxxxxxxxxxxxx or https://youtube.com/playlist?list=..." class="form-control">
+            <span class="input-hint">Paste an existing playlist ID or full playlist URL</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Options & Preferences -->
+      <div class="options-bar">
+        <label class="checkbox-option">
+          <input type="checkbox" id="optCloseTabs">
+          <span>Close tabs after saving</span>
+        </label>
+        <div class="dropdown">
+          <button id="btnExportMenu" class="btn btn-ghost btn-sm">
+            <span>Export / Share ▾</span>
+          </button>
+          <div id="exportMenuDropdown" class="dropdown-menu hidden">
+            <button id="btnCopyUrls">Copy Video URLs</button>
+            <button id="btnCopyIds">Copy Video IDs</button>
+            <button id="btnExportMarkdown">Export Markdown List</button>
+            <button id="btnExportJson">Export JSON</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Primary Action Buttons -->
+      <footer class="footer-actions">
+        <button id="btnSaveToPlaylist" class="btn btn-primary btn-block">
+          <i data-lucide="save" style="width:15px;height:15px;"></i>
+          <span id="btnSaveText">Save Selected Videos</span>
+        </button>
+
+        <button id="btnOpenQueue" class="btn btn-secondary btn-block" title="Launch an instant YouTube watch queue without API setup">
+          <i data-lucide="play" style="width:15px;height:15px;"></i>
+          <span>Open as Instant YouTube Queue</span>
+        </button>
+      </footer>
+    </div>
+
+    <!-- ==================== VIEW 2: CLEAN & ORGANIZE ==================== -->
+    <div id="viewOrganizePlaylist" class="feature-view hidden">
+      <!-- Sub-Navigation for Clean & Organize -->
+      <div class="organize-sub-nav">
+        <button id="subTabSinglePlaylist" class="sub-nav-btn active">Single Playlist</button>
+        <button id="subTabCrossPlaylists" class="sub-nav-btn">Cross-Playlist Scanner</button>
+      </div>
+
+      <!-- Sub-View A: Single Playlist Analysis -->
+      <div id="subViewSinglePlaylist" class="feature-view">
+        <section class="card">
+          <div class="card-title-bar">
+            <h2>Select Playlist to Analyze</h2>
+          </div>
+          <div class="form-group">
+            <select id="organizePlaylistSelect" class="form-control">
+              <option value="" disabled selected>Select a playlist to clean & organize...</option>
+            </select>
+          </div>
+          <button id="btnAnalyzePlaylist" class="btn btn-primary btn-block">
+            <i data-lucide="search" style="width:15px;height:15px;"></i>
+            <span>Analyze & Classify Videos</span>
+          </button>
+        </section>
+
+        <!-- Analysis Results Area -->
+        <div id="organizeResultsSection" class="organize-results hidden">
+          <!-- Duplicate Cleaner Card -->
+          <section class="card">
+            <div class="card-title-bar">
+              <h2>Duplicate Video Cleaner</h2>
+              <span id="dupCountBadge" class="badge-pill">0 duplicates</span>
+            </div>
+            <div id="duplicateListContainer" class="duplicate-list"></div>
+            <button id="btnRemoveDuplicates" class="btn btn-danger btn-block hidden">
+              <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
+              <span>Remove All Duplicate Copies</span>
+            </button>
+          </section>
+
+          <!-- Genre Organization Card -->
+          <section class="card">
+            <div class="card-title-bar">
+              <h2>Smart Genres & AI Summaries</h2>
+              <button id="btnSplitAllGenres" class="btn btn-success btn-xs" title="Create separate playlists for each detected genre">
+                <i data-lucide="git-branch" style="width:12px;height:12px;"></i>
+                Auto-Split All Genres
+              </button>
+            </div>
+            <p class="section-desc">Categories are ordered with Anime & Manga prioritized. Click "Summary" to view video details.</p>
+            <div id="genresListContainer" class="genres-container"></div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Sub-View B: Cross-Playlist Scanner -->
+      <div id="subViewCrossPlaylists" class="feature-view hidden">
+        <section class="card">
+          <div class="card-title-bar">
+            <h2>Cross-Playlist Duplicate Scanner</h2>
+          </div>
+          <p class="section-desc" style="margin-bottom:10px;">Scans all playlists on your YouTube account to find videos that exist in multiple playlists.</p>
+          <button id="btnScanCrossDuplicates" class="btn btn-primary btn-block">
+            <i data-lucide="layers" style="width:15px;height:15px;"></i>
+            <span>Scan All Playlists for Overlaps</span>
+          </button>
+        </section>
+
+        <!-- Cross-Duplicates Results -->
+        <div id="crossDuplicatesResultsSection" class="organize-results hidden">
+          <section class="card">
+            <div class="card-title-bar">
+              <h2>Cross-Playlist Overlaps</h2>
+              <span id="crossDupCountBadge" class="badge-pill">0 found</span>
+            </div>
+            <div id="crossDuplicateActionsBar" class="cross-actions-bar hidden" style="margin-bottom:10px;">
+              <button id="btnBulkResolveCrossDuplicates" class="btn btn-danger btn-sm btn-block">
+                <i data-lucide="trash-2" style="width:13px;height:13px;"></i>
+                <span>Bulk Clean: Keep in First Playlist Only</span>
+              </button>
+            </div>
+            <div id="crossDuplicatesListContainer" class="cross-duplicates-list"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal-backdrop hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Settings</h3>
+          <button id="btnCloseSettings" class="icon-btn" aria-label="Close Settings">
+            <i data-lucide="x" style="width:14px;height:14px;"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Auth Section in Settings -->
+          <div class="settings-section">
+            <h4>Google Account</h4>
+            <div id="settingsUserProfile" class="user-profile-badge hidden">
+              <img id="userAvatar" src="" alt="Avatar" class="user-avatar">
+              <div class="user-info">
+                <strong id="userName">User</strong>
+                <span id="userSubText">Connected</span>
+              </div>
+              <button id="btnSignOut" class="btn btn-outline btn-xs">Sign Out</button>
+            </div>
+            <div id="settingsSignInArea">
+              <p class="settings-text">Connect your YouTube account to access playlists.</p>
+              <button id="btnSettingsSignIn" class="btn btn-google btn-sm">Sign In with Google</button>
+            </div>
+          </div>
+
+          <!-- AI Summarizer Provider Choice -->
+          <div class="settings-section">
+            <div class="section-title-with-icon">
+              <i data-lucide="bot" style="width:14px;height:14px;"></i>
+              <h4>AI Video Summaries</h4>
+            </div>
+            <p class="settings-text">Choose which AI engine to use for generating video summaries:</p>
+            
+            <div class="form-group">
+              <label for="selectAiProvider" style="font-size:10px; color:#aaa;">AI Provider</label>
+              <select id="selectAiProvider" class="form-control" style="margin-top:3px;">
+                <option value="chrome">Chrome Built-in AI (Prompt API / Local - Free)</option>
+                <option value="gemini">Google Gemini API (Cloud Flash Model - Free Tier)</option>
+                <option value="heuristic">Smart Metadata Extractor (Offline / Instant)</option>
+              </select>
+            </div>
+
+            <div id="geminiKeyGroup" class="form-group hidden" style="margin-top:8px;">
+              <label for="inputGeminiApiKey" style="font-size:10px; color:#aaa;">
+                Google Gemini API Key (<a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent-blue);">Get Free Key</a>):
+              </label>
+              <input type="password" id="inputGeminiApiKey" placeholder="AIzaSy..." class="form-control" style="margin-top:3px;">
+            </div>
+
+            <div id="chromeAiStatus" class="form-group" style="margin-top:6px; font-size:10px; color:#888;">
+              <span>Checking Chrome Prompt API status...</span>
+            </div>
+
+            <button id="btnSaveSettings" class="btn btn-primary btn-sm" style="margin-top:8px;">Save Settings</button>
+          </div>
+
+          <!-- Developer & Advanced Options (Hidden / Collapsed by Default) -->
+          <details class="dev-options-section">
+            <summary class="dev-options-toggle">
+              <i data-lucide="sliders" style="width:12px;height:12px;"></i>
+              Developer & Advanced Options
+            </summary>
+            <div class="dev-options-content">
+              <p class="settings-text" style="font-size:10px;">For local unpacked testing and custom Google Cloud apps.</p>
+              <div class="form-group">
+                <label for="inputCustomClientId" style="font-size:10px;">Custom OAuth Client ID</label>
+                <input type="text" id="inputCustomClientId" placeholder="xxxx.apps.googleusercontent.com" class="form-control" style="font-size:10px;">
+              </div>
+              <div class="form-group">
+                <label for="inputCustomToken" style="font-size:10px;">Direct Token Override</label>
+                <input type="password" id="inputCustomToken" placeholder="ya29.a0..." class="form-control" style="font-size:10px;">
+              </div>
+              <div class="form-group" style="margin-top:8px;">
+                <label style="font-size:10px; color:#aaa;">Authorized Redirect URI (Google Cloud):</label>
+                <div style="display:flex; gap:6px; align-items:center; margin-top:3px;">
+                  <input type="text" id="redirectUriInput" readonly class="form-control" style="font-size:10px; font-family:monospace; background:rgba(0,0,0,0.5); cursor:text; flex:1;" value="Loading...">
+                  <button type="button" id="btnCopyRedirectUri" class="btn btn-outline btn-xs" style="white-space:nowrap; padding:4px 8px;" title="Copy Redirect URI">
+                    <i data-lucide="copy" style="width:12px;height:12px;"></i>
+                    Copy
+                  </button>
+                </div>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

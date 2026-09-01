@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { width: 1280px; height: 800px; background: #0a0a0a; color: #fff; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; padding: 40px 60px; background-image: radial-gradient(circle at 80% 20%, rgba(255, 0, 51, 0.15), transparent 40%), radial-gradient(circle at 20% 80%, rgba(62, 166, 255, 0.08), transparent 40%); }
+    .header-text { max-width: 600px; }
+    .badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,0,51,0.15); border: 1px solid rgba(255,0,51,0.3); color: #ff0033; font-size: 13px; font-weight: 700; padding: 6px 14px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+    h1 { font-size: 40px; font-weight: 800; line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 12px; background: linear-gradient(135deg, #ffffff 40%, #aaaaaa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    p { font-size: 17px; color: #a0a0a0; line-height: 1.5; }
+    .content-grid { display: flex; align-items: center; justify-content: space-between; gap: 40px; margin-top: 20px; }
+    .feature-list { display: flex; flex-direction: column; gap: 16px; max-width: 500px; }
+    .feature-item { display: flex; align-items: flex-start; gap: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 14px 18px; border-radius: 12px; }
+    .feature-icon { width: 32px; height: 32px; background: #ff0033; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; font-weight: bold; }
+    .feature-item h3 { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+    .feature-item p { font-size: 13px; color: #888; }
+    .popup-mockup { width: 440px; background: #1c1c1c; border: 1px solid #383838; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(255,0,51,0.15); padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .mock-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid #2e2e2e; }
+    .mock-brand { display: flex; align-items: center; gap: 10px; }
+    .mock-logo { width: 30px; height: 30px; background: #ff0033; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+    .mock-tab { display: flex; align-items: center; gap: 8px; background: #161616; border: 1px solid #2b2b2b; padding: 6px 8px; border-radius: 8px; }
+    .mock-thumb { width: 50px; height: 32px; background: #333; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #aaa; }
+    .mock-btn { background: #ff0033; color: white; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 13px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  </style>
+</head>
+<body>
+  <div class="content-grid">
+    <div class="header-text">
+      <div class="badge">YouTube Productivity</div>
+      <h1>1-Click YouTube Tabs to Playlist</h1>
+      <p>Instantly scan all open YouTube video tabs across windows, save them directly to your playlists, or launch instant watch queues.</p>
+      
+      <div class="feature-list" style="margin-top: 24px;">
+        <div class="feature-item">
+          <div class="feature-icon">📥</div>
+          <div>
+            <h3>Multi-Window Detection</h3>
+            <p>Scans current window or all open windows simultaneously.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">⚡</div>
+          <div>
+            <h3>Instant Watch Queue</h3>
+            <p>Queue all tabs in 1 click without requiring sign-in or API keys.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🧹</div>
+          <div>
+            <h3>Auto Tab Management</h3>
+            <p>Optionally close tabs after saving to free up gigabytes of RAM.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="popup-mockup">
+      <div class="mock-header">
+        <div class="mock-brand">
+          <div class="mock-logo">▶</div>
+          <div>
+            <div style="font-weight:700; font-size:14px;">YouTube Toolkit</div>
+            <div style="font-size:10px; color:#2ba640;">● Connected to YouTube</div>
+          </div>
+        </div>
+        <div style="font-size:11px; background:#282828; padding:3px 8px; border-radius:12px; color:#aaa;">6 tabs detected</div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div class="mock-tab" style="border-color:#ff0033;">
+          <input type="checkbox" checked style="accent-color:#ff0033;">
+          <div class="mock-thumb" style="background:#203a43;">Video 1</div>
+          <div style="flex:1; font-size:11px; font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Lo-Fi Chill Beats for Coding & Relaxing</div>
+          <span style="font-size:9px; background:rgba(43,166,64,0.2); color:#2ba640; padding:2px 6px; border-radius:10px;">New</span>
+        </div>
+        <div class="mock-tab" style="border-color:#ff0033;">
+          <input type="checkbox" checked style="accent-color:#ff0033;">
+          <div class="mock-thumb" style="background:#4b134f;">Video 2</div>
+          <div style="flex:1; font-size:11px; font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Solo Leveling Episode 12 Full Recap</div>
+          <span style="font-size:9px; background:rgba(43,166,64,0.2); color:#2ba640; padding:2px 6px; border-radius:10px;">New</span>
+        </div>
+        <div class="mock-tab">
+          <input type="checkbox" checked style="accent-color:#ff0033;">
+          <div class="mock-thumb" style="background:#134e5e;">Video 3</div>
+          <div style="flex:1; font-size:11px; font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Modern Web Dev with Tailwind CSS & Vite</div>
+          <span style="font-size:9px; background:rgba(62,166,255,0.2); color:#3ea6ff; padding:2px 6px; border-radius:10px;">Tech</span>
+        </div>
+      </div>
+
+      <div style="background:#141414; border:1px solid #2e2e2e; padding:10px; border-radius:8px;">
+        <div style="font-size:11px; color:#aaa; margin-bottom:4px;">Target Playlist</div>
+        <div style="font-weight:600; font-size:12px; color:#3ea6ff;">📁 Watch Later (142 videos)</div>
+      </div>
+
+      <div class="mock-btn">
+        <span>💾 Save 6 Videos to Playlist</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

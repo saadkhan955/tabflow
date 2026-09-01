@@ -1,0 +1,22 @@
+{
+  "name": "youtube-tabs-to-playlist",
+  "version": "1.0.0",
+  "description": "A sleek, modern Manifest V3 Chrome Extension that scans all your open YouTube video tabs across windows, saves them into playlists, removes duplicate videos, and auto-organizes your playlists into smart genres.",
+  "main": "background.js",
+  "scripts": {
+    "build": "tailwindcss -i ./src/input.css -o ./popup/popup.css --minify",
+    "watch": "tailwindcss -i ./src/input.css -o ./popup/popup.css --watch",
+    "package": "npm run build && ./scripts/package-extension.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  },
+  "dependencies": {
+    "lucide": "^1.39.0"
+  }
+}
