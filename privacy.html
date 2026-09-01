@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy - YouTube Tabs Saver</title>
+  <title>Privacy Policy - TabFlow for YouTube</title>
   <style>
     :root {
       --bg: #0f0f11;
@@ -22,7 +22,7 @@
       padding: 40px 20px;
     }
     .container {
-      max-width: 800px;
+      max-width: 840px;
       margin: 0 auto;
       background: var(--card-bg);
       padding: 40px;
@@ -30,7 +30,7 @@
       border: 1px solid var(--border);
     }
     h1 {
-      font-size: 28px;
+      font-size: 30px;
       color: #ffffff;
       margin-top: 0;
       border-bottom: 1px solid var(--border);
@@ -39,7 +39,9 @@
     h2 {
       font-size: 20px;
       color: #ffffff;
-      margin-top: 28px;
+      margin-top: 32px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding-bottom: 8px;
     }
     p, li {
       color: var(--text-muted);
@@ -67,54 +69,86 @@
       font-size: 13px;
       color: #71717a;
       text-align: center;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+    }
+    footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    footer a:hover {
+      color: #fff;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Privacy Policy for YouTube Tabs to Playlist</h1>
+    <h1>Privacy Policy for TabFlow for YouTube</h1>
     <p><strong>Effective Date:</strong> January 1, 2026<br>
     <strong>Last Updated:</strong> September 1, 2026</p>
 
     <div class="highlight-box">
-      <strong>Summary:</strong> YouTube Tabs to Playlist operates locally in your browser. We do NOT collect, sell, monetize, or transmit your personal data, browser history, or YouTube credentials to external third-party servers. All interactions with the YouTube API occur directly between your browser and Google's official API servers.
+      <strong>Core Summary:</strong> TabFlow for YouTube is a client-side browser extension that operates locally on your machine. We do NOT collect, sell, monetize, track, or transmit your personal data, browser history, or Google/YouTube credentials to external third-party servers. All interactions with the YouTube Data API occur directly and securely between your browser and Google's official API servers.
     </div>
 
     <h2>1. Information We Access and How It Is Used</h2>
+    <p>TabFlow for YouTube only accesses the minimum necessary browser permissions and Google APIs required to perform its single purpose:</p>
     <ul>
-      <li><strong>Open Browser Tabs (<code>tabs</code> permission):</strong> Used exclusively to detect open YouTube video tabs (matching <code>youtube.com/watch</code>, <code>/shorts/</code>, <code>/live/</code>, or <code>youtu.be</code>) to extract video IDs and titles for saving. Tab URLs are never logged or transmitted anywhere.</li>
-      <li><strong>YouTube Data API v3 (<code>https://www.googleapis.com/auth/youtube</code>):</strong> Used exclusively at your direct request to:
+      <li><strong>Open Browser Tabs (<code>tabs</code> permission):</strong>
+        <p>Used strictly in memory to inspect active browser tabs to detect open YouTube video URLs (matching <code>youtube.com/watch</code>, <code>/shorts/</code>, <code>/live/</code>, or <code>youtu.be</code>) and extract video titles and IDs. Tab URLs are processed locally and are never logged, stored on external servers, or transmitted anywhere.</p>
+      </li>
+      <li><strong>Google Identity & YouTube Data API v3 (<code>https://www.googleapis.com/auth/youtube</code>):</strong>
+        <p>When you explicitly sign in via Google OAuth2, the extension receives a temporary OAuth token directly from Google to interact with the YouTube Data API for the following explicit actions initiated by you:</p>
         <ul>
-          <li>Fetch your own playlists to display in the selector.</li>
-          <li>Insert selected videos into your designated playlist.</li>
-          <li>Identify and remove duplicate entries from your playlists.</li>
-          <li>Fetch video metadata (categories and topics) for genre organization.</li>
+          <li>Displaying your existing YouTube playlists in the dropdown selector.</li>
+          <li>Adding selected video tabs to your chosen playlist.</li>
+          <li>Creating a new playlist on your channel at your request.</li>
+          <li>Scanning your playlists for duplicate video entries and deleting duplicate copies when you click clean.</li>
+          <li>Fetching video topic categories strictly for genre classification.</li>
         </ul>
       </li>
-      <li><strong>Local Storage (<code>storage</code> permission):</strong> Used to store your UI preferences (such as auto-close tabs preference) and temporary cached playlist lists directly on your device.</li>
+      <li><strong>Local Storage (<code>storage</code> permission):</strong>
+        <p>Used to store your local interface preferences (such as auto-close tabs preference, selected AI provider, and temporary playlist cache) directly in your browser's local <code>chrome.storage</code>. This data never leaves your device.</p>
+      </li>
     </ul>
 
     <h2>2. Google API Services User Data Policy Compliance</h2>
-    <p>YouTube Tabs Saver's use and transfer of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy" style="color:var(--accent);" target="_blank">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
+    <p>TabFlow for YouTube's use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy" style="color:var(--accent);" target="_blank">Google API Services User Data Policy</a>, including the <strong>Limited Use</strong> requirements.</p>
     <p>Specifically:</p>
     <ul>
-      <li>We do NOT use Google user data for serving advertisements.</li>
-      <li>We do NOT allow humans to read user data.</li>
-      <li>We do NOT transfer or sell user data to any third party.</li>
+      <li>We only use access to YouTube Data API data to provide and improve user-facing features that are prominent in the user interface.</li>
+      <li>We do not transfer or disclose your Google user data to third parties.</li>
+      <li>We do not use your Google user data for serving advertisements, including retargeting, personalized, or interest-based advertising.</li>
+      <li>We do not use your Google user data to train generalized AI or machine learning models.</li>
+      <li>Human beings do not read your data unless you have given explicit consent for debugging issues, or as required by applicable law.</li>
     </ul>
 
-    <h2>3. Data Retention and Security</h2>
-    <p>Your OAuth tokens are managed securely by Chrome's built-in <code>chrome.identity</code> API and stored in your browser's private extension storage. You can disconnect your YouTube account and clear all local data at any time by clicking "Sign Out" in the extension settings or removing the extension from Chrome.</p>
+    <h2>3. Data Retention and Deletion</h2>
+    <p>Because all data is processed locally in your browser session, TabFlow for YouTube does not retain your data on external databases. You may revoke access at any time by signing out within the extension or by visiting <a href="https://myaccount.google.com/permissions" style="color:var(--accent);" target="_blank">Google Account Permissions</a>. Removing the extension immediately purges all locally stored preferences.</p>
 
-    <h2>4. Third-Party Services</h2>
-    <p>The only third-party service accessed is Google LLC (YouTube Data API v3 and Google OAuth2). Please refer to <a href="https://policies.google.com/privacy" style="color:var(--accent);" target="_blank">Google's Privacy Policy</a> for information on how Google manages your data.</p>
+    <h2>4. Third-Party Services and Analytics</h2>
+    <p>TabFlow for YouTube does not contain third-party analytics trackers, cookies, or telemetry libraries. The extension communicates directly with:</p>
+    <ul>
+      <li><code>https://www.googleapis.com</code> — Official Google & YouTube Data API endpoints.</li>
+    </ul>
 
     <h2>5. Contact Us</h2>
-    <p>If you have any questions or feedback regarding this Privacy Policy, please contact the developer at:<br>
-    <strong>Email:</strong> <a href="mailto:saad.khan955@gmail.com" style="color:var(--accent);">saad.khan955@gmail.com</a></p>
+    <p>If you have any questions, feedback, or privacy inquiries regarding TabFlow for YouTube, please contact the developer:</p>
+    <ul>
+      <li><strong>Developer:</strong> Saad Khan</li>
+      <li><strong>Email:</strong> <a href="mailto:saad.khan955@gmail.com" style="color:var(--accent);">saad.khan955@gmail.com</a></li>
+      <li><strong>Website:</strong> <a href="https://ytp.khansaad.dev/" style="color:var(--accent);">https://ytp.khansaad.dev/</a></li>
+      <li><strong>GitHub:</strong> <a href="https://github.com/saadkhan955/youtube-tabs-to-playlist" style="color:var(--accent);" target="_blank">saadkhan955/youtube-tabs-to-playlist</a></li>
+    </ul>
 
     <footer>
-      &copy; 2026 YouTube Tabs Saver. All rights reserved.
+      <p>&copy; 2026 TabFlow for YouTube. All rights reserved.</p>
+      <p>
+        <a href="index.html">Home</a> &bull;
+        <a href="terms.html">Terms of Service</a> &bull;
+        <a href="https://github.com/saadkhan955/youtube-tabs-to-playlist" target="_blank">GitHub</a>
+      </p>
     </footer>
   </div>
 </body>

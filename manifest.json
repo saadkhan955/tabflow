@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "YouTube Tabs to Playlist",
+  "name": "TabFlow for YouTube",
   "version": "1.0.0",
   "description": "Save all open YouTube tabs into a specific playlist, create new playlists, or launch instant video queues.",
   "permissions": [
