@@ -19,6 +19,9 @@
         </div>
       </div>
       <div class="header-actions">
+        <button id="btnToggleTheme" class="icon-btn" title="Toggle Light / Dark Theme" aria-label="Toggle Light or Dark Theme">
+          <i data-lucide="sun" id="themeToggleIcon" style="width:14px;height:14px;"></i>
+        </button>
         <button id="btnRefreshTabs" class="icon-btn" title="Refresh" aria-label="Refresh">
           <i data-lucide="rotate-cw" style="width:14px;height:14px;"></i>
         </button>
@@ -300,6 +303,22 @@
           </button>
         </div>
         <div class="modal-body">
+          <!-- Theme Preference Section -->
+          <div class="settings-section">
+            <div class="section-title-with-icon">
+              <i data-lucide="sun-moon" style="width:14px;height:14px;"></i>
+              <h4>Appearance & Theme</h4>
+            </div>
+            <div class="form-group">
+              <label for="selectThemePreference" style="font-size:10px; color:var(--text-muted);">Interface Theme</label>
+              <select id="selectThemePreference" class="form-control" style="margin-top:3px;">
+                <option value="dark">Dark Theme (YouTube Dark)</option>
+                <option value="light">Light Theme (YouTube Light)</option>
+                <option value="system">Auto (Follow System)</option>
+              </select>
+            </div>
+          </div>
+
           <!-- Auth Section in Settings -->
           <div class="settings-section">
             <h4>Google Account</h4>

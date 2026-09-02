@@ -140,6 +140,9 @@ const elements = {
   btnCloseSavedTabsNow: document.getElementById('btnCloseSavedTabsNow'),
   progressBarContainer: document.getElementById('progressBarContainer'),
   progressBarFill: document.getElementById('progressBarFill'),
+  btnToggleTheme: document.getElementById('btnToggleTheme'),
+  themeToggleIcon: document.getElementById('themeToggleIcon'),
+  selectThemePreference: document.getElementById('selectThemePreference'),
   btnOpenSettings: document.getElementById('btnOpenSettings'),
   btnCloseSettings: document.getElementById('btnCloseSettings'),
   settingsModal: document.getElementById('settingsModal'),
@@ -161,9 +164,62 @@ const elements = {
   btnCopyRedirectUri: document.getElementById('btnCopyRedirectUri')
 };
 
+// Theme Controller
+let currentEffectiveTheme = 'dark';
+
+async function initTheme() {
+  const data = await chrome.storage.local.get(['themePreference']);
+  const pref = data.themePreference || 'dark';
+  applyTheme(pref);
+
+  if (elements.selectThemePreference) {
+    elements.selectThemePreference.value = pref;
+  }
+
+  // Auto detect OS dark/light mode changes
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', async () => {
+    const res = await chrome.storage.local.get(['themePreference']);
+    if (res.themePreference === 'system') {
+      applyTheme('system');
+    }
+  });
+}
+
+function applyTheme(pref) {
+  let effective = pref;
+  if (pref === 'system') {
+    effective = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  document.documentElement.setAttribute('data-theme', effective);
+  currentEffectiveTheme = effective;
+
+  if (elements.themeToggleIcon) {
+    elements.themeToggleIcon.setAttribute('data-lucide', effective === 'dark' ? 'sun' : 'moon');
+  }
+  if (elements.btnToggleTheme) {
+    elements.btnToggleTheme.setAttribute(
+      'title',
+      effective === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'
+    );
+  }
+
+  refreshIcons();
+}
+
+async function toggleThemeQuick() {
+  const newTheme = currentEffectiveTheme === 'dark' ? 'light' : 'dark';
+  await chrome.storage.local.set({ themePreference: newTheme });
+  if (elements.selectThemePreference) {
+    elements.selectThemePreference.value = newTheme;
+  }
+  applyTheme(newTheme);
+}
+
 // Initialize Extension
 document.addEventListener('DOMContentLoaded', async () => {
   setupEventListeners();
+  await initTheme();
   refreshIcons();
   await loadSavedOptions();
   await checkAuth(false);
@@ -171,6 +227,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function setupEventListeners() {
+  if (elements.btnToggleTheme) {
+    elements.btnToggleTheme.addEventListener('click', toggleThemeQuick);
+  }
+  if (elements.selectThemePreference) {
+    elements.selectThemePreference.addEventListener('change', async (e) => {
+      const val = e.target.value;
+      await chrome.storage.local.set({ themePreference: val });
+      applyTheme(val);
+    });
+  }
+
   elements.navSaveTabs.addEventListener('click', () => switchFeatureView('save'));
   elements.navOrganizePlaylist.addEventListener('click', () => switchFeatureView('organize'));
 
