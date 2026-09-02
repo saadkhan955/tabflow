@@ -169,7 +169,7 @@ let currentEffectiveTheme = 'dark';
 
 async function initTheme() {
   const data = await chrome.storage.local.get(['themePreference']);
-  const pref = data.themePreference || 'dark';
+  const pref = data.themePreference || 'system';
   applyTheme(pref);
 
   if (elements.selectThemePreference) {
