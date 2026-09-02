@@ -1,160 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy - TabFlow for YouTube</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — TabFlow for YouTube</title>
+  <meta name="description" content="Privacy Policy for TabFlow for YouTube Chrome Extension." />
+  <link rel="canonical" href="https://tfy.khansaad.dev/privacy.html" />
+
   <meta name="theme-color" content="#ff0033" />
   <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-128.png" />
   <link rel="shortcut icon" href="favicon.ico" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
   <style>
     :root {
-      --bg: #0f0f11;
-      --card-bg: #18181b;
-      --text-main: #f4f4f5;
-      --text-muted: #a1a1aa;
-      --accent: #3b82f6;
-      --border: #27272a;
+      --primary: #ff0033;
+      --primary-hover: #d9002c;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --bg-page: #f8fafc;
+      --bg-card: #ffffff;
+      --border-color: #e2e8f0;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
     }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg);
-      color: var(--text-main);
-      line-height: 1.6;
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        --bg-page: #0b0f19;
+        --bg-card: #131b2e;
+        --border-color: #1e293b;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
-      padding: 40px 20px;
+      padding: 0;
     }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.7;
+    }
+
     .container {
-      max-width: 840px;
+      max-width: 820px;
       margin: 0 auto;
-      background: var(--card-bg);
+      padding: 40px 24px;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text-main);
+      text-decoration: none;
+    }
+
+    .brand img {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
       padding: 40px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
     }
+
     h1 {
-      font-size: 30px;
-      color: #ffffff;
-      margin-top: 0;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 16px;
+      font-size: 2.25rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
     }
+
+    .last-updated {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .highlight-box {
+      background: rgba(255, 0, 51, 0.08);
+      border-left: 4px solid var(--primary);
+      padding: 16px 20px;
+      border-radius: var(--radius-sm);
+      margin: 20px 0 28px;
+      color: var(--text-main);
+      font-size: 0.95rem;
+    }
+
     h2 {
-      font-size: 20px;
-      color: #ffffff;
-      margin-top: 32px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin: 32px 0 12px;
+      color: var(--text-main);
+      border-bottom: 1px solid var(--border-color);
       padding-bottom: 8px;
     }
-    p, li {
+
+    p, ul {
       color: var(--text-muted);
-      font-size: 15px;
+      margin-bottom: 16px;
+      font-size: 0.98rem;
     }
+
     ul {
-      padding-left: 24px;
+      padding-left: 20px;
     }
+
+    li {
+      margin-bottom: 8px;
+    }
+
     code {
-      background: #27272a;
+      background: rgba(255, 0, 51, 0.1);
+      color: #ff4e45;
       padding: 2px 6px;
       border-radius: 4px;
       font-family: monospace;
-      color: #93c5fd;
+      font-size: 0.9em;
     }
-    .highlight-box {
-      background: rgba(59, 130, 246, 0.1);
-      border-left: 4px solid var(--accent);
-      padding: 16px;
-      border-radius: 6px;
-      margin: 20px 0;
-    }
+
     footer {
-      margin-top: 40px;
-      font-size: 13px;
-      color: #71717a;
       text-align: center;
-      border-top: 1px solid var(--border);
-      padding-top: 20px;
-    }
-    footer a {
+      margin-top: 40px;
       color: var(--text-muted);
-      text-decoration: none;
-      margin: 0 10px;
+      font-size: 0.9rem;
     }
-    footer a:hover {
-      color: #fff;
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
+
   <div class="container">
-    <h1>Privacy Policy for TabFlow for YouTube</h1>
-    <p><strong>Effective Date:</strong> January 1, 2026<br>
-    <strong>Last Updated:</strong> September 1, 2026</p>
+    <nav class="navbar">
+      <a href="index.html" class="brand">
+        <img src="icons/icon-48.png" alt="TabFlow for YouTube Logo" />
+        <span>TabFlow for YouTube</span>
+      </a>
+      <a href="index.html">← Back to Home</a>
+    </nav>
 
-    <div class="highlight-box">
-      <strong>Core Summary:</strong> TabFlow for YouTube is a client-side browser extension that operates locally on your machine. We do NOT collect, sell, monetize, track, or transmit your personal data, browser history, or Google/YouTube credentials to external third-party servers. All interactions with the YouTube Data API occur directly and securely between your browser and Google's official API servers.
-    </div>
+    <main class="card">
+      <h1>Privacy Policy</h1>
+      <span class="last-updated">Last Updated: September 1, 2026 • Effective Date: January 1, 2026</span>
 
-    <h2>1. Information We Access and How It Is Used</h2>
-    <p>TabFlow for YouTube only accesses the minimum necessary browser permissions and Google APIs required to perform its single purpose:</p>
-    <ul>
-      <li><strong>Open Browser Tabs (<code>tabs</code> permission):</strong>
-        <p>Used strictly in memory to inspect active browser tabs to detect open YouTube video URLs (matching <code>youtube.com/watch</code>, <code>/shorts/</code>, <code>/live/</code>, or <code>youtu.be</code>) and extract video titles and IDs. Tab URLs are processed locally and are never logged, stored on external servers, or transmitted anywhere.</p>
-      </li>
-      <li><strong>Google Identity & YouTube Data API v3 (<code>https://www.googleapis.com/auth/youtube</code>):</strong>
-        <p>When you explicitly sign in via Google OAuth2, the extension receives a temporary OAuth token directly from Google to interact with the YouTube Data API for the following explicit actions initiated by you:</p>
-        <ul>
-          <li>Displaying your existing YouTube playlists in the dropdown selector.</li>
-          <li>Adding selected video tabs to your chosen playlist.</li>
-          <li>Creating a new playlist on your channel at your request.</li>
-          <li>Scanning your playlists for duplicate video entries and deleting duplicate copies when you click clean.</li>
-          <li>Fetching video topic categories strictly for genre classification.</li>
-        </ul>
-      </li>
-      <li><strong>Local Storage (<code>storage</code> permission):</strong>
-        <p>Used to store your local interface preferences (such as auto-close tabs preference, selected AI provider, and temporary playlist cache) directly in your browser's local <code>chrome.storage</code>. This data never leaves your device.</p>
-      </li>
-    </ul>
+      <div class="highlight-box">
+        <strong>Core Summary:</strong> TabFlow for YouTube is a client-side browser extension that operates locally on your machine. We do NOT collect, sell, monetize, track, or transmit your personal data, browser history, or Google/YouTube credentials to external third-party servers. All interactions with the YouTube Data API occur directly and securely between your browser and Google's official API servers.
+      </div>
 
-    <h2>2. Google API Services User Data Policy Compliance</h2>
-    <p>TabFlow for YouTube's use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy" style="color:var(--accent);" target="_blank">Google API Services User Data Policy</a>, including the <strong>Limited Use</strong> requirements.</p>
-    <p>Specifically:</p>
-    <ul>
-      <li>We only use access to YouTube Data API data to provide and improve user-facing features that are prominent in the user interface.</li>
-      <li>We do not transfer or disclose your Google user data to third parties.</li>
-      <li>We do not use your Google user data for serving advertisements, including retargeting, personalized, or interest-based advertising.</li>
-      <li>We do not use your Google user data to train generalized AI or machine learning models.</li>
-      <li>Human beings do not read your data unless you have given explicit consent for debugging issues, or as required by applicable law.</li>
-    </ul>
+      <h2>1. Information We Access and How It Is Used</h2>
+      <p>TabFlow for YouTube only accesses the minimum necessary browser permissions and Google APIs required to perform its single purpose:</p>
+      <ul>
+        <li><strong>Open Browser Tabs (<code>tabs</code> permission):</strong>
+          <p>Used strictly in memory to inspect active browser tabs to detect open YouTube video URLs (matching <code>youtube.com/watch</code>, <code>/shorts/</code>, <code>/live/</code>, or <code>youtu.be</code>) and extract video titles and IDs. Tab URLs are processed locally and are never logged, stored on external servers, or transmitted anywhere.</p>
+        </li>
+        <li><strong>Google Identity & YouTube Data API v3 (<code>https://www.googleapis.com/auth/youtube</code>):</strong>
+          <p>When you explicitly sign in via Google OAuth2, the extension receives a temporary OAuth token directly from Google to interact with the YouTube Data API for the following explicit actions initiated by you:</p>
+          <ul>
+            <li>Displaying your existing YouTube playlists in the dropdown selector.</li>
+            <li>Adding selected video tabs to your chosen playlist.</li>
+            <li>Creating a new playlist on your channel at your request.</li>
+            <li>Scanning your playlists for duplicate video entries and deleting duplicate copies when you click clean.</li>
+            <li>Fetching video topic categories strictly for genre classification.</li>
+          </ul>
+        </li>
+        <li><strong>Local Storage (<code>storage</code> permission):</strong>
+          <p>Used to store your local interface preferences (such as auto-close tabs preference, selected AI provider, and temporary playlist cache) directly in your browser's local <code>chrome.storage</code>. This data never leaves your device.</p>
+        </li>
+      </ul>
 
-    <h2>3. Data Retention and Deletion</h2>
-    <p>Because all data is processed locally in your browser session, TabFlow for YouTube does not retain your data on external databases. You may revoke access at any time by signing out within the extension or by visiting <a href="https://myaccount.google.com/permissions" style="color:var(--accent);" target="_blank">Google Account Permissions</a>. Removing the extension immediately purges all locally stored preferences.</p>
+      <h2>2. Google API Services User Data Policy Compliance</h2>
+      <p>TabFlow for YouTube's use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank">Google API Services User Data Policy</a>, including the <strong>Limited Use</strong> requirements.</p>
+      <p>Specifically:</p>
+      <ul>
+        <li>We only use access to YouTube Data API data to provide and improve user-facing features that are prominent in the user interface.</li>
+        <li>We do not transfer or disclose your Google user data to third parties.</li>
+        <li>We do not use your Google user data for serving advertisements, including retargeting, personalized, or interest-based advertising.</li>
+        <li>We do not use your Google user data to train generalized AI or machine learning models.</li>
+        <li>Human beings do not read your data unless you have given explicit consent for debugging issues, or as required by applicable law.</li>
+      </ul>
 
-    <h2>4. Third-Party Services and Analytics</h2>
-    <p>TabFlow for YouTube does not contain third-party analytics trackers, cookies, or telemetry libraries. The extension communicates directly with:</p>
-    <ul>
-      <li><code>https://www.googleapis.com</code> — Official Google & YouTube Data API endpoints.</li>
-    </ul>
+      <h2>3. Data Retention and Deletion</h2>
+      <p>Because all data is processed locally in your browser session, TabFlow for YouTube does not retain your data on external databases. You may revoke access at any time by signing out within the extension or by visiting <a href="https://myaccount.google.com/permissions" target="_blank">Google Account Permissions</a>. Removing the extension immediately purges all locally stored preferences.</p>
 
-    <h2>5. Contact Us</h2>
-    <p>If you have any questions, feedback, or privacy inquiries regarding TabFlow for YouTube, please contact the developer:</p>
-    <ul>
-      <li><strong>Developer:</strong> Saad Khan</li>
-      <li><strong>Email:</strong> <a href="mailto:saad.khan955@gmail.com" style="color:var(--accent);">saad.khan955@gmail.com</a></li>
-      <li><strong>Website:</strong> <a href="https://ytp.khansaad.dev/" style="color:var(--accent);">https://ytp.khansaad.dev/</a></li>
-      <li><strong>GitHub:</strong> <a href="https://github.com/saadkhan955/youtube-tabs-to-playlist" style="color:var(--accent);" target="_blank">saadkhan955/youtube-tabs-to-playlist</a></li>
-    </ul>
+      <h2>4. Third-Party Services and Analytics</h2>
+      <p>TabFlow for YouTube does not contain third-party analytics trackers, cookies, or telemetry libraries. The extension communicates directly with:</p>
+      <ul>
+        <li><code>https://www.googleapis.com</code> — Official Google & YouTube Data API endpoints.</li>
+      </ul>
+
+      <h2>5. Contact Us</h2>
+      <p>If you have any questions, feedback, or privacy inquiries regarding TabFlow for YouTube, please contact the developer:</p>
+      <ul>
+        <li><strong>Developer:</strong> Saad Khan</li>
+        <li><strong>Email:</strong> <a href="mailto:saad.khan955@gmail.com">saad.khan955@gmail.com</a></li>
+        <li><strong>Website:</strong> <a href="https://tfy.khansaad.dev/">https://tfy.khansaad.dev/</a></li>
+        <li><strong>GitHub:</strong> <a href="https://github.com/saadkhan955/youtube-tabs-to-playlist" target="_blank">saadkhan955/youtube-tabs-to-playlist</a></li>
+      </ul>
+    </main>
 
     <footer>
-      <p>&copy; 2026 TabFlow for YouTube. All rights reserved.</p>
-      <p>
-        <a href="index.html">Home</a> &bull;
-        <a href="terms.html">Terms of Service</a> &bull;
-        <a href="https://github.com/saadkhan955/youtube-tabs-to-playlist" target="_blank">GitHub</a>
-      </p>
+      <p>© 2026 TabFlow for YouTube. Built by Saad Khan. Open source and privacy-focused.</p>
     </footer>
   </div>
+
 </body>
 </html>
