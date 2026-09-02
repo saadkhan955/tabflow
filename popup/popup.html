@@ -41,10 +41,10 @@
     </nav>
 
     <!-- Progress & Status Notification Area (Always Visible at Top) -->
-    <div id="statusNotification" class="status-box hidden">
+    <div id="statusNotification" class="status-box hidden" role="status" aria-live="polite">
       <div class="status-header">
         <span id="statusIcon" class="status-icon-box"></span>
-        <span id="statusMessage">Processing...</span>
+        <span id="statusMessage">Processing…</span>
       </div>
       <div id="progressBarContainer" class="progress-bar-wrapper hidden">
         <div id="progressBarFill" class="progress-bar-fill" style="width: 0%"></div>
@@ -81,7 +81,7 @@
             <label for="selectAllCheckbox" class="card-subtitle">Select All (<span id="selectedCountText">0</span>)</label>
           </div>
           <div class="search-input-wrapper">
-            <input type="text" id="tabSearchInput" placeholder="Filter tabs..." class="search-input">
+            <input type="text" id="tabSearchInput" placeholder="Filter tabs…" aria-label="Filter open YouTube tabs" class="search-input">
           </div>
         </div>
 
@@ -291,10 +291,10 @@
     </div>
 
     <!-- Settings Modal -->
-    <div id="settingsModal" class="modal-backdrop hidden">
+    <div id="settingsModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
       <div class="modal-content">
         <div class="modal-header">
-          <h3>Settings</h3>
+          <h3 id="settingsModalTitle">Settings</h3>
           <button id="btnCloseSettings" class="icon-btn" aria-label="Close Settings">
             <i data-lucide="x" style="width:14px;height:14px;"></i>
           </button>
@@ -338,11 +338,11 @@
               <label for="inputGeminiApiKey" style="font-size:10px; color:#aaa;">
                 Google Gemini API Key (<a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent-blue);">Get Free Key</a>):
               </label>
-              <input type="password" id="inputGeminiApiKey" placeholder="AIzaSy..." class="form-control" style="margin-top:3px;">
+              <input type="password" id="inputGeminiApiKey" placeholder="AIzaSy…" class="form-control" style="margin-top:3px;">
             </div>
 
             <div id="chromeAiStatus" class="form-group" style="margin-top:6px; font-size:10px; color:#888;">
-              <span>Checking Chrome Prompt API status...</span>
+              <span>Checking Chrome Prompt API status…</span>
             </div>
 
             <button id="btnSaveSettings" class="btn btn-primary btn-sm" style="margin-top:8px;">Save Settings</button>

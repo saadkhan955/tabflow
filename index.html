@@ -70,12 +70,14 @@
       margin: 0 0 16px 0;
       line-height: 1.15;
       letter-spacing: -0.5px;
+      text-wrap: balance;
     }
     p.subtitle {
       font-size: 19px;
       color: var(--text-muted);
       max-width: 760px;
       margin: 0 auto 36px auto;
+      text-wrap: pretty;
     }
     .section-card {
       background: var(--card-bg);
@@ -91,6 +93,23 @@
       color: #ffffff;
       border-bottom: 1px solid var(--border);
       padding-bottom: 12px;
+      text-wrap: balance;
+      scroll-margin-top: 2rem;
+    }
+    a:focus-visible {
+      outline: 2px solid var(--accent-blue);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+    .step-num {
+      font-variant-numeric: tabular-nums;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
     }
     .features-grid {
       display: grid;
