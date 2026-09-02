@@ -939,11 +939,14 @@
   font-size: 12px;
   outline: none;
   font-family: inherit;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.form-control:focus {
-  border-color: #ff0033;
+.form-control:focus,
+.form-control:focus-visible {
+  border-color: #ff0033 !important;
+  box-shadow: 0 0 0 2px rgba(255, 0, 51, 0.2) !important;
+  outline: none !important;
 }
 
 .form-row {
@@ -1387,11 +1390,14 @@ body.modal-open .app-container {
 /* Accessible Focus Rings */
 button:focus-visible,
 a:focus-visible,
-input:focus-visible,
-select:focus-visible,
 summary:focus-visible {
   outline: 2px solid var(--accent-blue-theme) !important;
   outline-offset: 2px !important;
+}
+
+input:focus-visible,
+select:focus-visible {
+  outline: none !important;
 }
 
 /* Reduced Motion Compliance */
