@@ -3,6 +3,21 @@
  * Powered by Lucide Icons & Tailwind CSS
  */
 
+// Instant theme bootstrap (CSP-compliant)
+try {
+  chrome.storage.local.get(['themePreference'], (res) => {
+    const pref = res && res.themePreference ? res.themePreference : 'system';
+    const isDark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const theme = isDark ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+    if (document.body) {
+      document.body.setAttribute('data-theme', theme);
+    }
+  });
+} catch (e) {
+  // Ignored
+}
+
 import { getOpenYouTubeTabs, buildYouTubeQueueUrl } from '../scripts/tab-extractor.js';
 import {
   getAccessToken,

@@ -6,21 +6,6 @@
   <title>YouTube Tabs to Playlist</title>
   <link rel="stylesheet" href="popup.css">
   <script src="../scripts/lucide.min.js"></script>
-  <script>
-    (function() {
-      try {
-        chrome.storage.local.get(['themePreference'], function(res) {
-          var pref = res && res.themePreference ? res.themePreference : 'system';
-          var isDark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-          var theme = isDark ? 'dark' : 'light';
-          document.documentElement.setAttribute('data-theme', theme);
-          if (document.body) {
-            document.body.setAttribute('data-theme', theme);
-          }
-        });
-      } catch (e) {}
-    })();
-  </script>
 </head>
 <body>
   <div class="app-container">
