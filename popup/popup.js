@@ -172,17 +172,24 @@ async function initTheme() {
   const pref = data.themePreference || 'system';
   applyTheme(pref);
 
-  if (elements.selectThemePreference) {
-    elements.selectThemePreference.value = pref;
+  const selectTheme = document.getElementById('selectThemePreference');
+  if (selectTheme) {
+    selectTheme.value = pref;
   }
 
-  // Auto detect OS dark/light mode changes
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', async () => {
-    const res = await chrome.storage.local.get(['themePreference']);
-    if (res.themePreference === 'system') {
-      applyTheme('system');
-    }
-  });
+  // Auto detect OS / Browser dark/light mode changes
+  try {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    mediaQuery.addEventListener('change', async () => {
+      const res = await chrome.storage.local.get(['themePreference']);
+      const currentPref = res.themePreference || 'system';
+      if (currentPref === 'system') {
+        applyTheme('system');
+      }
+    });
+  } catch (err) {
+    console.warn('Theme media query error:', err);
+  }
 }
 
 function applyTheme(pref) {
@@ -192,13 +199,15 @@ function applyTheme(pref) {
   }
 
   document.documentElement.setAttribute('data-theme', effective);
+  if (document.body) {
+    document.body.setAttribute('data-theme', effective);
+  }
   currentEffectiveTheme = effective;
 
-  if (elements.themeToggleIcon) {
-    elements.themeToggleIcon.setAttribute('data-lucide', effective === 'dark' ? 'sun' : 'moon');
-  }
-  if (elements.btnToggleTheme) {
-    elements.btnToggleTheme.setAttribute(
+  const btn = document.getElementById('btnToggleTheme');
+  if (btn) {
+    btn.innerHTML = `<i data-lucide="${effective === 'dark' ? 'sun' : 'moon'}" style="width:14px;height:14px;"></i>`;
+    btn.setAttribute(
       'title',
       effective === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'
     );
@@ -210,8 +219,9 @@ function applyTheme(pref) {
 async function toggleThemeQuick() {
   const newTheme = currentEffectiveTheme === 'dark' ? 'light' : 'dark';
   await chrome.storage.local.set({ themePreference: newTheme });
-  if (elements.selectThemePreference) {
-    elements.selectThemePreference.value = newTheme;
+  const selectTheme = document.getElementById('selectThemePreference');
+  if (selectTheme) {
+    selectTheme.value = newTheme;
   }
   applyTheme(newTheme);
 }
@@ -227,11 +237,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function setupEventListeners() {
-  if (elements.btnToggleTheme) {
-    elements.btnToggleTheme.addEventListener('click', toggleThemeQuick);
+  const btnToggle = document.getElementById('btnToggleTheme');
+  if (btnToggle) {
+    btnToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleThemeQuick();
+    });
   }
-  if (elements.selectThemePreference) {
-    elements.selectThemePreference.addEventListener('change', async (e) => {
+
+  const selectTheme = document.getElementById('selectThemePreference');
+  if (selectTheme) {
+    selectTheme.addEventListener('change', async (e) => {
       const val = e.target.value;
       await chrome.storage.local.set({ themePreference: val });
       applyTheme(val);
