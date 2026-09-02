@@ -133,6 +133,7 @@ const elements = {
   btnSaveText: document.getElementById('btnSaveText'),
   btnOpenQueue: document.getElementById('btnOpenQueue'),
   organizePlaylistSelect: document.getElementById('organizePlaylistSelect'),
+  btnReloadOrganizePlaylists: document.getElementById('btnReloadOrganizePlaylists'),
   btnAnalyzePlaylist: document.getElementById('btnAnalyzePlaylist'),
   organizeResultsSection: document.getElementById('organizeResultsSection'),
   dupCountBadge: document.getElementById('dupCountBadge'),
@@ -302,15 +303,20 @@ function setupEventListeners() {
   });
 
   elements.btnReloadPlaylists.addEventListener('click', () => loadPlaylists(true));
+  if (elements.btnReloadOrganizePlaylists) {
+    elements.btnReloadOrganizePlaylists.addEventListener('click', () => loadPlaylists(true));
+  }
   elements.playlistSelect.addEventListener('change', handlePlaylistSelectChange);
   elements.manualPlaylistInput.addEventListener('input', debounce(handleManualPlaylistChange, 600));
 
   elements.btnAnalyzePlaylist.addEventListener('click', handleAnalyzePlaylist);
   elements.btnRemoveDuplicates.addEventListener('click', handleRemoveDuplicates);
   elements.btnSplitAllGenres.addEventListener('click', handleSplitAllGenres);
-
-  if (elements.btnScanCrossDuplicates) {
-    elements.btnScanCrossDuplicates.addEventListener('click', handleScanCrossDuplicates);
+  elements.btnScanCrossDuplicates.addEventListener('click', handleScanCrossDuplicates);
+  if (elements.organizePlaylistSelect) {
+    elements.organizePlaylistSelect.addEventListener('change', (e) => {
+      chrome.storage.local.set({ lastSelectedPlaylistId: e.target.value });
+    });
   }
   if (elements.btnBulkResolveCrossDuplicates) {
     elements.btnBulkResolveCrossDuplicates.addEventListener('click', handleBulkResolveCrossDuplicates);
@@ -327,33 +333,10 @@ function setupEventListeners() {
   }
 
   elements.btnSaveSettings.addEventListener('click', saveCustomSettings);
-
-  if (elements.btnCopyRedirectUri) {
-    elements.btnCopyRedirectUri.addEventListener('click', async () => {
-      const uri = elements.redirectUriInput ? elements.redirectUriInput.value : chrome.identity.getRedirectURL();
-      try {
-        await navigator.clipboard.writeText(uri);
-        elements.btnCopyRedirectUri.innerHTML = `
-          <i data-lucide="check" style="width:12px;height:12px;"></i>
-          Copied
-        `;
-        refreshIcons();
-        setTimeout(() => {
-          if (elements.btnCopyRedirectUri) {
-            elements.btnCopyRedirectUri.innerHTML = `
-              <i data-lucide="copy" style="width:12px;height:12px;"></i>
-              Copy
-            `;
-            refreshIcons();
-          }
-        }, 2000);
-      } catch {
-        if (elements.redirectUriInput) {
-          elements.redirectUriInput.select();
-        }
-      }
-    });
-  }
+  elements.btnCopyRedirectUri.addEventListener('click', () => {
+    navigator.clipboard.writeText(elements.redirectUriInput.value);
+    showStatus('info', 'Redirect URI copied to clipboard!');
+  });
 
   elements.btnCloseSavedTabsNow.addEventListener('click', handleCloseSavedTabsNow);
 
@@ -386,8 +369,11 @@ function switchFeatureView(view) {
   elements.viewSaveTabs.classList.toggle('hidden', view !== 'save');
   elements.viewOrganizePlaylist.classList.toggle('hidden', view !== 'organize');
 
-  if (view === 'organize' && state.userPlaylists.length === 0 && state.authToken) {
-    loadPlaylists(false);
+  if (view === 'organize') {
+    renderPlaylistsSelect();
+    if (state.authToken && state.userPlaylists.length === 0) {
+      loadPlaylists(false);
+    }
   }
   refreshIcons();
 }
@@ -822,6 +808,22 @@ async function handleSaveToPlaylist() {
       });
       targetPlaylistId = created.id;
       targetPlaylistTitle = created.title;
+
+      const newPlObj = {
+        id: created.id,
+        title: created.title,
+        description: desc,
+        privacyStatus: privacy,
+        itemCount: selectedTabs.length,
+        thumbnailUrl: '',
+        publishedAt: new Date().toISOString()
+      };
+      state.userPlaylists = [newPlObj, ...state.userPlaylists.filter((p) => p.id !== created.id)];
+      await chrome.storage.local.set({ cachedPlaylists: state.userPlaylists, lastSelectedPlaylistId: created.id });
+      renderPlaylistsSelect();
+      if (elements.playlistSelect) elements.playlistSelect.value = created.id;
+      if (elements.organizePlaylistSelect) elements.organizePlaylistSelect.value = created.id;
+
       loadPlaylists(true);
     } catch (err) {
       showStatus('error', `Failed to create playlist: ${err.message}`);
