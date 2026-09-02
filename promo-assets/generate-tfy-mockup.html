@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TabFlow for YouTube Mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      width: 1440px;
+      height: 900px;
+      background: radial-gradient(circle at 75% 25%, #2a0b12 0%, #08090d 65%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      overflow: hidden;
+      padding: 30px;
+    }
+
+    /* Browser Window Container */
+    .browser-window {
+      width: 1380px;
+      height: 840px;
+      background: #0f0f12;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 0, 51, 0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Browser Header / Tab Bar */
+    .browser-header {
+      background: #18181c;
+      padding: 10px 16px 0;
+      border-bottom: 1px solid #27272e;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .window-controls-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .traffic-lights {
+      display: flex;
+      gap: 8px;
+      padding-right: 8px;
+    }
+
+    .traffic-light {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .traffic-red { background: #ff5f56; }
+    .traffic-yellow { background: #ffbd2e; }
+    .traffic-green { background: #27c93f; }
+
+    .browser-tabs {
+      display: flex;
+      gap: 6px;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .tab {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: #0f0f12;
+      border-radius: 8px 8px 0 0;
+      color: #f1f5f9;
+      font-size: 12px;
+      font-weight: 500;
+      max-width: 200px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      border: 1px solid #27272e;
+      border-bottom: none;
+    }
+
+    .tab.inactive {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+    }
+
+    .tab-icon {
+      font-size: 13px;
+    }
+
+    /* Address Bar Row */
+    .address-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 10px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 8px;
+      color: #94a3b8;
+      font-size: 14px;
+    }
+
+    .address-input {
+      flex: 1;
+      background: #0f0f12;
+      border: 1px solid #2e2e38;
+      border-radius: 6px;
+      padding: 6px 14px;
+      color: #94a3b8;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .address-input span.url-main {
+      color: #ff4e45;
+      font-weight: 600;
+    }
+
+    .toolbar-extensions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ext-icon-active {
+      width: 28px;
+      height: 28px;
+      background: rgba(255, 0, 51, 0.2);
+      border: 1px solid rgba(255, 0, 51, 0.5);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* Webpage Content Area */
+    .browser-content {
+      flex: 1;
+      background: #0a0a0c;
+      padding: 36px 40px;
+      color: #94a3b8;
+      position: relative;
+    }
+
+    .mockup-youtube-hero {
+      max-width: 580px;
+      margin-top: 20px;
+    }
+
+    .mockup-youtube-hero h2 {
+      font-size: 32px;
+      color: #ffffff;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mockup-youtube-hero p {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #a1a1aa;
+    }
+
+    .mockup-feed-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+      max-width: 580px;
+    }
+
+    .mockup-feed-card {
+      background: #141418;
+      border: 1px solid #22222a;
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mockup-feed-thumb {
+      height: 90px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #1e1e24 0%, #2a1116 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ff4e45;
+      font-size: 20px;
+    }
+
+    /* TabFlow Popup Overlay */
+    .popup-overlay {
+      position: absolute;
+      top: 10px;
+      right: 24px;
+      width: 410px;
+      background: #0f0f11;
+      border: 1px solid #2b2b32;
+      border-radius: 12px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 0, 51, 0.3);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* TabFlow Header */
+    .tf-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid #222228;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .tf-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tf-logo {
+      width: 28px;
+      height: 28px;
+      background: #ff0033;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .tf-brand-info h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .tf-brand-info span {
+      font-size: 10px;
+      color: #2ba640;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .tf-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tf-icon-btn {
+      width: 26px;
+      height: 26px;
+      background: #18181c;
+      border: 1px solid #2b2b34;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    /* Main Nav Switcher */
+    .tf-nav-tabs {
+      display: flex;
+      padding: 8px 16px;
+      gap: 8px;
+      background: #141418;
+      border-bottom: 1px solid #222228;
+    }
+
+    .tf-nav-tab {
+      flex: 1;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      text-align: center;
+      background: transparent;
+      color: #94a3b8;
+      border: 1px solid transparent;
+    }
+
+    .tf-nav-tab.active {
+      background: #1f1f26;
+      color: #ffffff;
+      border-color: #33333d;
+    }
+
+    /* Scope & Filter Row */
+    .tf-filter-row {
+      padding: 10px 16px 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tf-scope-tabs {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .tf-scope-btns {
+      display: flex;
+      gap: 4px;
+      background: #18181c;
+      padding: 2px;
+      border-radius: 6px;
+      border: 1px solid #27272e;
+    }
+
+    .tf-scope-btn {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+
+    .tf-scope-btn.active {
+      background: #ff0033;
+      color: #fff;
+    }
+
+    .tf-tab-count {
+      font-size: 10px;
+      font-weight: 700;
+      color: #ff4e45;
+      background: rgba(255, 0, 51, 0.12);
+      padding: 2px 8px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 0, 51, 0.25);
+    }
+
+    .tf-search-input {
+      width: 100%;
+      background: #16161a;
+      border: 1px solid #282830;
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: #cbd5e1;
+      font-size: 11px;
+    }
+
+    /* Video List */
+    .tf-video-list {
+      padding: 6px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 260px;
+    }
+
+    .tf-video-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #16161c;
+      border: 1px solid #262630;
+      border-radius: 8px;
+      padding: 8px;
+    }
+
+    .tf-video-item.checked {
+      border-color: rgba(255, 0, 51, 0.4);
+      background: #1b171c;
+    }
+
+    .tf-check {
+      width: 16px;
+      height: 16px;
+      background: #ff0033;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 10px;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .tf-thumb {
+      width: 52px;
+      height: 32px;
+      border-radius: 4px;
+      background: #252530;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      position: relative;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .tf-duration {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      background: rgba(0, 0, 0, 0.85);
+      color: #fff;
+      font-size: 8px;
+      font-weight: 700;
+      padding: 1px 3px;
+      border-radius: 2px;
+    }
+
+    .tf-video-info {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .tf-video-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: #f1f5f9;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+
+    .tf-video-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 9px;
+      color: #71717a;
+    }
+
+    .tf-badge-genre {
+      background: rgba(62, 166, 255, 0.15);
+      color: #3ea6ff;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    /* Target Playlist Card */
+    .tf-target-playlist {
+      margin: 8px 16px 0;
+      background: #141418;
+      border: 1px solid #27272e;
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .tf-target-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .tf-mode-pills {
+      display: flex;
+      gap: 4px;
+      font-size: 9px;
+    }
+
+    .tf-mode-pill {
+      background: #1f1f26;
+      color: #94a3b8;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .tf-mode-pill.active {
+      background: #272733;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .tf-select-box {
+      width: 100%;
+      background: #1a1a20;
+      border: 1px solid #2f2f3a;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 11px;
+      color: #3ea6ff;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Actions Footer */
+    .tf-actions-area {
+      padding: 10px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tf-btn-primary {
+      background: #ff0033;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      box-shadow: 0 4px 14px rgba(255, 0, 51, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .tf-btn-secondary {
+      background: #18181e;
+      color: #f1f5f9;
+      border: 1px solid #2b2b36;
+      padding: 7px 14px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .tf-bottom-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="browser-window">
+    <!-- Browser Top Bar -->
+    <div class="browser-header">
+      <div class="window-controls-row">
+        <div class="traffic-lights">
+          <div class="traffic-light traffic-red"></div>
+          <div class="traffic-light traffic-yellow"></div>
+          <div class="traffic-light traffic-green"></div>
+        </div>
+
+        <div class="browser-tabs">
+          <div class="tab">
+            <span class="tab-icon">▶️</span>
+            <span>YouTube — Next.js 15 & React 19 Full Course</span>
+          </div>
+          <div class="tab inactive">
+            <span class="tab-icon">▶️</span>
+            <span>Building AI Agents in Python</span>
+          </div>
+          <div class="tab inactive">
+            <span class="tab-icon">▶️</span>
+            <span>Top 10 Epic Anime Openings</span>
+          </div>
+          <div class="tab inactive">
+            <span class="tab-icon">▶️</span>
+            <span>Lofi Hip Hop Radio 24/7</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Address Bar Row -->
+      <div class="address-bar-row">
+        <div class="nav-buttons">
+          <span>←</span>
+          <span>→</span>
+          <span>↻</span>
+        </div>
+
+        <div class="address-input">
+          <span>🔒</span>
+          <span>https://<span class="url-main">youtube.com</span>/watch?v=k5jG4...</span>
+        </div>
+
+        <div class="toolbar-extensions">
+          <div class="ext-icon-active" title="TabFlow for YouTube Active">▶️</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Webpage Content -->
+    <div class="browser-content">
+      <div class="mockup-youtube-hero">
+        <h2><span>📺</span> YouTube Video Library</h2>
+        <p>You have 4 active video tabs open across your browser. Use TabFlow to save them all directly into your playlists or open them as an instant continuous queue.</p>
+      </div>
+
+      <div class="mockup-feed-grid">
+        <div class="mockup-feed-card">
+          <div class="mockup-feed-thumb">⚡ Next.js 15</div>
+          <div style="font-size:12px;font-weight:600;color:#fff;">Next.js 15 &amp; React 19 Full Course</div>
+          <div style="font-size:10px;color:#71717a;">Dave Gray • 142K views</div>
+        </div>
+
+        <div class="mockup-feed-card">
+          <div class="mockup-feed-thumb">🤖 AI Agents</div>
+          <div style="font-size:12px;font-weight:600;color:#fff;">Building AI Agents with Python</div>
+          <div style="font-size:10px;color:#71717a;">freeCodeCamp • 89K views</div>
+        </div>
+      </div>
+
+      <!-- TabFlow Popup Overlay -->
+      <div class="popup-overlay">
+        <!-- Header -->
+        <div class="tf-header">
+          <div class="tf-brand">
+            <div class="tf-logo">▶</div>
+            <div class="tf-brand-info">
+              <h4>TabFlow for YouTube</h4>
+              <span>● YouTube Connected</span>
+            </div>
+          </div>
+          <div class="tf-header-actions">
+            <div class="tf-icon-btn">☀️</div>
+            <div class="tf-icon-btn">🔄</div>
+            <div class="tf-icon-btn">⚙️</div>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="tf-nav-tabs">
+          <div class="tf-nav-tab active">⬇️ Save Open Tabs</div>
+          <div class="tf-nav-tab">✨ Clean &amp; Organize</div>
+        </div>
+
+        <!-- Scope & Filter -->
+        <div class="tf-filter-row">
+          <div class="tf-scope-tabs">
+            <div class="tf-scope-btns">
+              <span class="tf-scope-btn active">Current Window</span>
+              <span class="tf-scope-btn">All Windows</span>
+            </div>
+            <span class="tf-tab-count">4 tabs detected</span>
+          </div>
+          <div class="tf-search-input">🔍 Filter tabs...</div>
+        </div>
+
+        <!-- Video Tab List -->
+        <div class="tf-video-list">
+          <div class="tf-video-item checked">
+            <div class="tf-check">✓</div>
+            <div class="tf-thumb" style="background:#1e293b;">
+              💻
+              <span class="tf-duration">2:45:10</span>
+            </div>
+            <div class="tf-video-info">
+              <div class="tf-video-title">Next.js 15 &amp; React 19 Full Course (2026)</div>
+              <div class="tf-video-meta">
+                <span>Dave Gray</span>
+                <span>•</span>
+                <span class="tf-badge-genre">Tech</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="tf-video-item checked">
+            <div class="tf-check">✓</div>
+            <div class="tf-thumb" style="background:#2e1065;">
+              🤖
+              <span class="tf-duration">1:12:05</span>
+            </div>
+            <div class="tf-video-info">
+              <div class="tf-video-title">Building Autonomous AI Agents in Python</div>
+              <div class="tf-video-meta">
+                <span>freeCodeCamp</span>
+                <span>•</span>
+                <span class="tf-badge-genre">Tech</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="tf-video-item checked">
+            <div class="tf-check">✓</div>
+            <div class="tf-thumb" style="background:#831843;">
+              📖
+              <span class="tf-duration">18:40</span>
+            </div>
+            <div class="tf-video-info">
+              <div class="tf-video-title">Top 10 Epic Anime Openings (4K 60FPS)</div>
+              <div class="tf-video-meta">
+                <span>AnimeRealm</span>
+                <span>•</span>
+                <span class="tf-badge-genre" style="color:#ff7675;background:rgba(255,118,117,0.15);">Anime</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="tf-video-item checked">
+            <div class="tf-check">✓</div>
+            <div class="tf-thumb" style="background:#064e3b;">
+              🎵
+              <span class="tf-duration">LIVE</span>
+            </div>
+            <div class="tf-video-info">
+              <div class="tf-video-title">Lofi Hip Hop Radio — Beats to Relax/Study</div>
+              <div class="tf-video-meta">
+                <span>Lofi Girl</span>
+                <span>•</span>
+                <span class="tf-badge-genre" style="color:#34d399;background:rgba(52,211,153,0.15);">Music</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Target Playlist -->
+        <div class="tf-target-playlist">
+          <div class="tf-target-header">
+            <span>Target Playlist</span>
+            <div class="tf-mode-pills">
+              <span class="tf-mode-pill active">Select</span>
+              <span class="tf-mode-pill">+ New</span>
+              <span class="tf-mode-pill">ID / URL</span>
+            </div>
+          </div>
+          <div class="tf-select-box">
+            <span>📁 Web Dev &amp; AI Tutorials (42 items)</span>
+            <span>▾</span>
+          </div>
+        </div>
+
+        <!-- Actions Footer -->
+        <div class="tf-actions-area">
+          <div class="tf-btn-primary">
+            <span>💾 Save 4 Videos to Playlist</span>
+          </div>
+          <div class="tf-btn-secondary">
+            <span>▷ Open as Instant YouTube Queue</span>
+          </div>
+          <div class="tf-bottom-bar">
+            <span>☑ Close tabs after saving</span>
+            <span>Export / Share ▾</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
