@@ -4,14 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TabFlow — Save YouTube Tabs to Playlists &amp; Remove Duplicates</title>
-  <meta name="description" content="Turn open YouTube video tabs into organized playlists in seconds, purge duplicate videos, and build instant queues. 100% private, free Chrome extension." />
+  <meta name="description" content="Turn open YouTube video tabs into organized playlists in seconds, purge duplicate videos, and build instant queues. Local-first, private, free Chrome extension." />
   <link rel="canonical" href="https://tfy.khansaad.dev/" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://tfy.khansaad.dev/" />
   <meta property="og:title" content="TabFlow — Save YouTube Tabs to Playlists &amp; Remove Duplicates" />
-  <meta property="og:description" content="Turn open YouTube video tabs into organized playlists in seconds, purge duplicate videos, and build instant queues. 100% private, free Chrome extension." />
+  <meta property="og:description" content="Turn open YouTube video tabs into organized playlists in seconds, purge duplicate videos, and build instant queues. Local-first, private, free Chrome extension." />
   <meta property="og:image" content="https://tfy.khansaad.dev/promo-assets/promo-marquee.png" />
   <meta property="og:site_name" content="TabFlow" />
 
@@ -19,7 +19,7 @@
   <meta property="twitter:card" content="summary_large_image" />
   <meta property="twitter:url" content="https://tfy.khansaad.dev/" />
   <meta property="twitter:title" content="TabFlow — Save YouTube Tabs to Playlists &amp; Remove Duplicates" />
-  <meta property="twitter:description" content="Turn open YouTube video tabs into organized playlists in seconds, purge duplicate videos, and build instant queues. 100% private, free Chrome extension." />
+  <meta property="twitter:description" content="Turn open YouTube video tabs into organized playlists in seconds, purge duplicate videos, and build instant queues. Local-first, private, free Chrome extension." />
   <meta property="twitter:image" content="https://tfy.khansaad.dev/promo-assets/promo-marquee.png" />
 
   <meta name="theme-color" content="#ff0033" />
@@ -57,18 +57,18 @@
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "Does TabFlow store my YouTube data or browsing history?",
+            "name": "Does TabFlow store my YouTube data or browsing history on a server?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. TabFlow operates 100% locally in your browser. Authentication tokens, playlist preferences, and tab information never leave your device and are never sent to external servers."
+              "text": "No. TabFlow operates on a local-first architecture. Tab information, authentication tokens, and playlist preferences are stored locally in your browser session. TabFlow operates zero backend databases."
             }
           },
           {
             "@type": "Question",
-            "name": "Does TabFlow work without signing in?",
+            "name": "Does TabFlow work without signing in to Google?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes! The Instant Watch Queue and Tab Export features work completely offline without requiring any Google or YouTube sign-in."
+              "text": "Yes! The Instant Watch Queue and Tab Export features work completely offline without requiring any Google or YouTube account sign-in."
             }
           },
           {
@@ -85,11 +85,7 @@
   }
   </script>
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-
+  <!-- High-Performance Zero-Tracking Native System Font Stack -->
   <style>
     :root {
       --primary: #ff0033;
@@ -129,7 +125,7 @@
     }
 
     body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
       background-color: var(--bg-page);
       color: var(--text-main);
       line-height: 1.6;
@@ -357,7 +353,7 @@
       gap: 8px;
       font-size: 12px;
       color: var(--text-muted);
-      font-family: 'JetBrains Mono', monospace;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
 
     .tab-mock-item {
@@ -469,6 +465,29 @@
       line-height: 1.6;
     }
 
+    /* AI Highlight Banner */
+    .ai-highlight-card {
+      background: linear-gradient(135deg, rgba(255, 0, 51, 0.04) 0%, rgba(14, 165, 233, 0.04) 100%);
+      border: 1px solid var(--border-highlight);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      margin-bottom: 72px;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .ai-badge {
+      padding: 4px 10px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
     /* Use Cases Section */
     .use-cases-section {
       padding: 64px 0;
@@ -546,7 +565,7 @@
       line-height: 1.5;
     }
 
-    /* FAQ */
+    /* Accessible FAQ */
     .faq-section {
       max-width: 800px;
       margin: 0 auto 72px;
@@ -558,24 +577,60 @@
       border-radius: var(--radius-md);
       margin-bottom: 12px;
       overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .faq-item:focus-within {
+      border-color: var(--primary);
     }
 
     .faq-question {
+      width: 100%;
+      background: transparent;
+      border: 0;
       padding: 20px 24px;
       font-size: 16px;
       font-weight: 700;
+      color: var(--text-main);
+      text-align: left;
       cursor: pointer;
       display: flex;
       justify-content: space-between;
       align-items: center;
       user-select: none;
+      font-family: inherit;
+    }
+
+    .faq-question:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: -2px;
+    }
+
+    .faq-icon {
+      transition: transform 0.25s ease;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
+      color: var(--primary);
     }
 
     .faq-answer {
-      padding: 0 24px 20px;
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 24px;
       font-size: 14px;
       color: var(--text-muted);
       line-height: 1.6;
+      transition: max-height 0.3s cubic-bezier(0, 1, 0, 1), padding 0.3s ease;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 300px;
+      padding: 0 24px 20px;
+      transition: max-height 0.3s ease-in-out, padding 0.3s ease;
     }
 
     /* CTA Box */
@@ -641,6 +696,7 @@
       .features-grid { grid-template-columns: 1fr; }
       .use-cases-grid { grid-template-columns: 1fr 1fr; }
       .trust-grid { grid-template-columns: 1fr; }
+      .ai-highlight-card { flex-direction: column; text-align: center; }
     }
   </style>
 </head>
@@ -803,6 +859,22 @@
       </div>
     </section>
 
+    <!-- AI Feature Highlight -->
+    <div class="ai-highlight-card">
+      <div>
+        <div style="font-size: 32px;">🧠</div>
+      </div>
+      <div style="flex: 1;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+          <span class="ai-badge">AI-Powered</span>
+          <h3 style="font-size: 18px; font-weight: 800;">Intelligent Topic Categorization</h3>
+        </div>
+        <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5;">
+          TabFlow analyzes video titles and metadata on-device to intelligently cluster your tabs into relevant topics (Coding, Lectures, Focus Music, Entertainment) so you can create structured playlists in seconds.
+        </p>
+      </div>
+    </div>
+
     <!-- Use Cases Section -->
     <section class="use-cases-section">
       <div class="container">
@@ -832,7 +904,7 @@
       </div>
     </section>
 
-    <!-- How It Works Section -->
+    <!-- How It Works Section (Precise Copy) -->
     <section id="how-it-works" style="margin-bottom: 72px;">
       <div class="section-header">
         <h2>How It Works</h2>
@@ -860,21 +932,23 @@
 
         <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px;">
           <div style="font-weight: 800; color: var(--primary); font-size: 18px; margin-bottom: 8px;">04</div>
-          <h4 style="font-size: 15px; margin-bottom: 6px;">Save &amp; Close Tabs</h4>
-          <p style="font-size: 13px; color: var(--text-muted);">Videos are saved, duplicates purged, and tabs closed cleanly.</p>
+          <h4 style="font-size: 15px; margin-bottom: 6px;">Save &amp; Clean Up</h4>
+          <p style="font-size: 13px; color: var(--text-muted);">Videos are saved to your chosen playlist. You can optionally purge duplicate videos or close original tabs with a single toggle.</p>
         </div>
       </div>
     </section>
 
-    <!-- Trust & Permissions Transparency Section -->
+    <!-- Trust & Permissions Transparency Section (Refined Local-First Language) -->
     <section id="trust" class="trust-section">
       <div class="trust-card">
-        <div style="text-align: center; max-width: 600px; margin: 0 auto 32px;">
+        <div style="text-align: center; max-width: 650px; margin: 0 auto 32px;">
           <div style="display: inline-block; padding: 4px 12px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 9999px; color: #10b981; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 12px;">
-            🔒 Built Differently: 100% Local &amp; Private
+            🔒 Local-First Architecture &bull; Direct Privacy
           </div>
-          <h2 style="font-size: 28px; font-weight: 800;">Your Data Stays on Your Machine</h2>
-          <p style="font-size: 14px; color: var(--text-muted);">We believe your browsing history is private. TabFlow has zero external databases or tracking telemetry.</p>
+          <h2 style="font-size: 28px; font-weight: 800;">Zero Middleman Servers</h2>
+          <p style="font-size: 14px; color: var(--text-muted); margin-top: 8px;">
+            Your TabFlow settings, preferences, and tab states are stored locally on your device. All Google authentication and YouTube actions communicate directly with Google's official endpoints over encrypted HTTPS. TabFlow never operates an intermediary database or collects user telemetry.
+          </p>
         </div>
 
         <div class="trust-grid">
@@ -882,7 +956,7 @@
             <div class="trust-icon">&check;</div>
             <div>
               <h4>No External Databases</h4>
-              <p>Your OAuth tokens, playlist preferences, and tab titles are stored strictly in local Chrome extension storage.</p>
+              <p>Your OAuth tokens, playlist preferences, and tab titles are stored strictly in local Chrome storage on your machine.</p>
             </div>
           </div>
 
@@ -890,7 +964,7 @@
             <div class="trust-icon">&check;</div>
             <div>
               <h4>Minimal Permissions Only</h4>
-              <p>TabFlow only requests <code>tabs</code> to find YouTube links, <code>storage</code> for preferences, and <code>identity</code> for direct Google OAuth.</p>
+              <p>TabFlow requests only <code>tabs</code> (to find YouTube video links), <code>storage</code> (for theme preferences), and <code>identity</code> (for direct Google OAuth).</p>
             </div>
           </div>
 
@@ -898,7 +972,7 @@
             <div class="trust-icon">&check;</div>
             <div>
               <h4>Google API Limited Use Compliant</h4>
-              <p>TabFlow strictly complies with the Google API Services User Data Policy. We never sell, monetize, or transfer your data.</p>
+              <p>TabFlow strictly adheres to the Google API Services User Data Policy. We never sell, monetize, or transfer your data.</p>
             </div>
           </div>
 
@@ -913,7 +987,7 @@
       </div>
     </section>
 
-    <!-- FAQ Section -->
+    <!-- Accessible & Interactive FAQ Section -->
     <section id="faq" class="faq-section">
       <div class="section-header">
         <h2>Frequently Asked Questions</h2>
@@ -921,28 +995,53 @@
       </div>
 
       <div class="faq-item">
-        <div class="faq-question">Does TabFlow store my YouTube data or credentials? <span>&darr;</span></div>
-        <div class="faq-answer">No. All authentication occurs directly between your browser and Google's OAuth servers. TabFlow does not own or operate any database servers.</div>
+        <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-1">
+          <span>Does TabFlow store my YouTube data or browsing history on a server?</span>
+          <span class="faq-icon" aria-hidden="true">&darr;</span>
+        </button>
+        <div id="faq-ans-1" class="faq-answer">
+          No. TabFlow operates on a local-first architecture. All authentication occurs directly between your browser and Google's official OAuth servers. TabFlow operates zero backend databases.
+        </div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-question">Does TabFlow collect my general browsing history? <span>&darr;</span></div>
-        <div class="faq-answer">No. The <code>tabs</code> permission is used exclusively to filter URLs matching <code>youtube.com/watch</code> across your windows. Your browsing habits are never recorded or sent anywhere.</div>
+        <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-2">
+          <span>Does TabFlow collect my general browsing history?</span>
+          <span class="faq-icon" aria-hidden="true">&darr;</span>
+        </button>
+        <div id="faq-ans-2" class="faq-answer">
+          No. The <code>tabs</code> permission is used exclusively to filter URLs matching <code>youtube.com/watch</code> across your windows. Your browsing habits are never recorded, tracked, or sent anywhere.
+        </div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-question">Can I use TabFlow without signing in? <span>&darr;</span></div>
-        <div class="faq-answer">Yes! You can use the Instant Watch Queue and Tab Export features completely offline without logging into a Google account.</div>
+        <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-3">
+          <span>Can I use TabFlow without signing in to a Google account?</span>
+          <span class="faq-icon" aria-hidden="true">&darr;</span>
+        </button>
+        <div id="faq-ans-3" class="faq-answer">
+          Yes! You can use the Instant Watch Queue and Tab Export features completely offline without logging into a Google account.
+        </div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-question">Is TabFlow free? <span>&darr;</span></div>
-        <div class="faq-answer">Yes, TabFlow is 100% free with no subscriptions, in-app purchases, or advertisements.</div>
+        <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-4">
+          <span>Is TabFlow free and open source?</span>
+          <span class="faq-icon" aria-hidden="true">&darr;</span>
+        </button>
+        <div id="faq-ans-4" class="faq-answer">
+          Yes, TabFlow is 100% free with no subscriptions, in-app purchases, or advertisements. The source code is publicly inspectable on GitHub.
+        </div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-question">Can I use TabFlow across multiple Chrome windows? <span>&darr;</span></div>
-        <div class="faq-answer">Yes. You can toggle between scanning video tabs in your current active window or across all open Chrome windows simultaneously.</div>
+        <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-5">
+          <span>Can I use TabFlow across multiple Chrome windows?</span>
+          <span class="faq-icon" aria-hidden="true">&darr;</span>
+        </button>
+        <div id="faq-ans-5" class="faq-answer">
+          Yes. You can toggle between scanning video tabs in your current active window or across all open Chrome windows simultaneously.
+        </div>
       </div>
     </section>
 
@@ -975,6 +1074,34 @@
       <p>&copy; 2026 TabFlow. Built by <a href="https://khansaad.dev" target="_blank" rel="noopener" style="font-weight: 700; color: var(--text-main);">Saad Khan</a> — Drupal &amp; Full-Stack Engineer.</p>
     </footer>
   </div>
+
+  <!-- Interactive Accessible FAQ Script -->
+  <script>
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+        const item = button.parentElement;
+        const isOpen = item.classList.contains('active');
+        
+        // Close other items
+        document.querySelectorAll('.faq-item').forEach(other => {
+          if (other !== item) {
+            other.classList.remove('active');
+            const otherBtn = other.querySelector('.faq-question');
+            if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        // Toggle current item
+        if (isOpen) {
+          item.classList.remove('active');
+          button.setAttribute('aria-expanded', 'false');
+        } else {
+          item.classList.add('active');
+          button.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>
