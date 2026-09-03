@@ -4,89 +4,97 @@
   <meta charset="UTF-8">
   <style>
     * { margin:0; padding:0; box-sizing:border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { width: 1280px; height: 800px; background: #0a0a0a; color: #fff; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; padding: 40px 60px; background-image: radial-gradient(circle at 20% 20%, rgba(62, 166, 255, 0.15), transparent 40%), radial-gradient(circle at 80% 80%, rgba(43, 166, 64, 0.12), transparent 40%); }
-    .header-text { max-width: 600px; }
-    .badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(62,166,255,0.15); border: 1px solid rgba(62,166,255,0.3); color: #3ea6ff; font-size: 13px; font-weight: 700; padding: 6px 14px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
-    h1 { font-size: 40px; font-weight: 800; line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 12px; background: linear-gradient(135deg, #ffffff 40%, #aaaaaa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    p { font-size: 17px; color: #a0a0a0; line-height: 1.5; }
-    .content-grid { display: flex; align-items: center; justify-content: space-between; gap: 40px; margin-top: 20px; }
-    .feature-list { display: flex; flex-direction: column; gap: 16px; max-width: 500px; }
-    .feature-item { display: flex; align-items: flex-start; gap: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 14px 18px; border-radius: 12px; }
-    .feature-icon { width: 32px; height: 32px; background: #3ea6ff; color:#000; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; font-weight: bold; }
-    .feature-item h3 { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 2px; }
-    .feature-item p { font-size: 13px; color: #888; }
-    .popup-mockup { width: 440px; background: #1c1c1c; border: 1px solid #383838; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(62,166,255,0.15); padding: 16px; display: flex; flex-direction: column; gap: 10px; }
-    .genre-card { background: #181818; border: 1px solid #2e2e2e; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
-    .genre-hdr { display: flex; align-items: center; justify-content: space-between; font-weight: 700; font-size: 12px; }
-    .btn-create { background: #2ba640; color: white; font-size: 10px; padding: 3px 8px; border-radius: 4px; border: none; font-weight: 600; }
+    body { width: 1280px; height: 800px; background: #080c16; color: #fff; overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 40px 60px; background-image: radial-gradient(circle at 20% 20%, rgba(239, 68, 68, 0.18), transparent 45%), radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.15), transparent 45%); }
+    .content-grid { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 48px; }
+    .header-text { max-width: 540px; }
+    .badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; font-size: 13px; font-weight: 800; padding: 6px 14px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
+    h1 { font-size: 42px; font-weight: 800; line-height: 1.15; letter-spacing: -1px; margin-bottom: 16px; color: #ffffff; }
+    h1 span { background: linear-gradient(135deg, #ef4444 0%, #f97316 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    p { font-size: 16px; color: #94a3b8; line-height: 1.6; }
+    .feature-list { display: flex; flex-direction: column; gap: 14px; margin-top: 24px; }
+    .feature-item { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 14px 18px; border-radius: 12px; }
+    .feature-icon { width: 34px; height: 34px; background: #ef4444; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; font-weight: bold; color: #fff; }
+    .feature-item h3 { font-size: 15px; font-weight: 700; color: #fff; }
+    .feature-item p { font-size: 13px; color: #94a3b8; margin-top: 2px; }
+    
+    .popup-mockup { width: 440px; background: #0f172a; border: 1px solid #1e293b; border-radius: 20px; box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 40px rgba(239,68,68,0.2); padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+    .mock-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid #1e293b; }
+    .mock-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 15px; }
+    .mock-card { background: #1e293b; border: 1px solid #334155; padding: 12px; border-radius: 12px; display: flex; flex-direction: column; gap: 8px; }
+    .dup-badge { background: rgba(239,68,68,0.2); color: #ef4444; border: 1px solid rgba(239,68,68,0.4); font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; }
+    .mock-btn { background: #10b981; color: white; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 14px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(16,185,129,0.4); }
   </style>
 </head>
 <body>
   <div class="content-grid">
     <div class="header-text">
-      <div class="badge">AI Organization</div>
-      <h1>Smart Genres & Video Summaries</h1>
-      <p>Auto-categorize hundreds of videos into clean genres and generate instant AI summaries with Chrome On-Device AI or Google Gemini.</p>
+      <div class="badge">Playlist Cleanup</div>
+      <h1>Purge <span>Duplicate Videos</span> in 1-Click</h1>
+      <p>Scan your playlists to instantly identify repeated entries and clean up duplicates automatically without manual checking.</p>
       
-      <div class="feature-list" style="margin-top: 24px;">
+      <div class="feature-list">
         <div class="feature-item">
-          <div class="feature-icon">✨</div>
+          <div class="feature-icon">🔍</div>
           <div>
-            <h3>High-Precision Classification</h3>
-            <p>Recognizes Anime & Manga, Tech, Music, Gaming, Business, Fitness & more.</p>
+            <h3>Deep Playlist Scanner</h3>
+            <p>Identifies exact video ID duplicates and matching title occurrences.</p>
           </div>
         </div>
         <div class="feature-item">
-          <div class="feature-icon">🔀</div>
+          <div class="feature-icon">🧹</div>
           <div>
-            <h3>Auto-Split Playlists</h3>
-            <p>1-Click split to automatically generate separate genre playlists.</p>
+            <h3>Batch Duplicate Cleaner</h3>
+            <p>Purges redundant entries while keeping your playlist ordering intact.</p>
           </div>
         </div>
         <div class="feature-item">
-          <div class="feature-icon">🤖</div>
+          <div class="feature-icon">🛡️</div>
           <div>
-            <h3>Instant AI Summaries</h3>
-            <p>Generate video summaries with local on-device AI without leaving your popup.</p>
+            <h3>Safe &amp; Non-Destructive</h3>
+            <p>Retains the original video entry and removes only repeated copies.</p>
           </div>
         </div>
       </div>
     </div>
 
     <div class="popup-mockup">
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #2e2e2e; padding-bottom:8px;">
-        <span style="font-weight:700; font-size:13px;">Smart Genres & AI Summaries</span>
-        <span style="background:#2ba640; color:#fff; font-size:10px; padding:3px 8px; border-radius:12px; font-weight:700;">Auto-Split All</span>
+      <div class="mock-header">
+        <div class="mock-brand">
+          <div style="width:28px; height:28px; background:#ef4444; border-radius:6px; display:flex; align-items:center; justify-content:center; font-weight:bold;">🧹</div>
+          <div>
+            <div>Duplicate Cleaner</div>
+            <div style="font-size:11px; color:#94a3b8;">Playlist: "Watch Later / Favorites"</div>
+          </div>
+        </div>
+        <span style="font-size:11px; color:#ef4444; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:4px 8px; border-radius:6px; font-weight:700;">12 Duplicates</span>
       </div>
 
-      <div class="genre-card">
-        <div class="genre-hdr">
-          <span style="color:#ff7675;">📖 Anime & Manga (14 videos)</span>
-          <button class="btn-create">+ Create Playlist</button>
+      <div class="mock-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:12px; font-weight:700;">React 19 Server Components Explained</span>
+          <span class="dup-badge">3 Copies Found</span>
         </div>
-        <div style="font-size:11px; color:#aaa; background:#222; padding:6px; border-radius:4px; border-left:2px solid #3ea6ff;">
-          <strong>Summary:</strong> High-stakes dungeon awakening battle recap covering chapters 45-60.
-        </div>
+        <div style="font-size:11px; color:#94a3b8;">Positions: #4, #18, #32 &bull; Duration: 24:10</div>
       </div>
 
-      <div class="genre-card">
-        <div class="genre-hdr">
-          <span style="color:#74b9ff;">💻 Tech & Programming (8 videos)</span>
-          <button class="btn-create">+ Create Playlist</button>
+      <div class="mock-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:12px; font-weight:700;">Lofi Hip Hop Radio - Beats to Relax/Study</span>
+          <span class="dup-badge">2 Copies Found</span>
         </div>
-        <div style="font-size:11px; color:#aaa; background:#222; padding:6px; border-radius:4px;">
-          • Building Chrome Extensions with Manifest V3 and Tailwind CSS
-        </div>
+        <div style="font-size:11px; color:#94a3b8;">Positions: #1, #45 &bull; Duration: Live</div>
       </div>
 
-      <div class="genre-card">
-        <div class="genre-hdr">
-          <span style="color:#a29bfe;">🎵 Music & Audio (12 videos)</span>
-          <button class="btn-create">+ Create Playlist</button>
+      <div class="mock-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:12px; font-weight:700;">Cloudflare Workers &amp; Durable Objects Guide</span>
+          <span class="dup-badge">2 Copies Found</span>
         </div>
-        <div style="font-size:11px; color:#aaa; background:#222; padding:6px; border-radius:4px;">
-          • Synthwave 80s Cyberpunk Full Album Mix
-        </div>
+        <div style="font-size:11px; color:#94a3b8;">Positions: #12, #29 &bull; Duration: 38:40</div>
+      </div>
+
+      <div class="mock-btn">
+        <span>Clean All 12 Duplicates (Keep 1st Copy)</span>
       </div>
     </div>
   </div>

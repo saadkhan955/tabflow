@@ -4,42 +4,57 @@
   <meta charset="UTF-8">
   <style>
     * { margin:0; padding:0; box-sizing:border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { width: 1400px; height: 560px; background: #0a0a0a; color: #fff; overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 60px 100px; background-image: radial-gradient(circle at 20% 50%, rgba(255, 0, 51, 0.2), transparent 50%), radial-gradient(circle at 80% 50%, rgba(62, 166, 255, 0.15), transparent 50%); }
-    .left-content { max-width: 650px; }
-    .badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,0,51,0.15); border: 1px solid rgba(255,0,51,0.3); color: #ff0033; font-size: 14px; font-weight: 700; padding: 6px 14px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
-    h1 { font-size: 48px; font-weight: 800; line-height: 1.1; margin-bottom: 16px; letter-spacing: -0.5px; }
-    p { font-size: 18px; color: #a0a0a0; line-height: 1.5; margin-bottom: 24px; }
-    .badges-row { display: flex; gap: 10px; }
-    .badge-pill { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 8px 16px; border-radius: 9999px; font-size: 12px; font-weight: 600; }
-    .right-card { width: 440px; background: #1c1c1c; border: 1px solid #383838; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 40px rgba(255,0,51,0.2); padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+    body { width: 1400px; height: 560px; background: #080c16; color: #fff; overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 40px 80px; background-image: radial-gradient(circle at 75% 30%, rgba(255, 0, 51, 0.2), transparent 50%), radial-gradient(circle at 20% 80%, rgba(14, 165, 233, 0.15), transparent 50%); }
+    .hero-text { max-width: 600px; }
+    .badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,0,51,0.15); border: 1px solid rgba(255,0,51,0.3); color: #ff0033; font-size: 13px; font-weight: 800; padding: 6px 14px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
+    h1 { font-size: 48px; font-weight: 800; line-height: 1.15; letter-spacing: -1.5px; margin-bottom: 16px; }
+    h1 span { background: linear-gradient(135deg, #ff0033 0%, #ff5252 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    p { font-size: 18px; color: #94a3b8; line-height: 1.6; margin-bottom: 24px; }
+    .pill-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .pill { padding: 6px 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 13px; font-weight: 700; color: #cbd5e1; }
+    
+    .showcase-card { width: 480px; background: #0f172a; border: 1px solid #1e293b; border-radius: 20px; box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 50px rgba(255,0,51,0.25); padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+    .mock-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid #1e293b; }
+    .mock-tab { display: flex; align-items: center; gap: 10px; background: #1e293b; border: 1px solid #334155; padding: 10px 14px; border-radius: 10px; font-size: 13px; font-weight: 700; }
+    .mock-btn { background: #ff0033; color: white; padding: 14px; border-radius: 12px; font-weight: 800; font-size: 15px; text-align: center; box-shadow: 0 6px 20px rgba(255,0,51,0.4); }
   </style>
 </head>
 <body>
-  <div class="left-content">
-    <div class="badge">Chrome Extension</div>
-    <h1>YouTube Tabs to Playlist</h1>
-    <p>The all-in-one YouTube tab manager, duplicate video cleaner, and smart AI playlist organizer for power users.</p>
-    <div class="badges-row">
-      <div class="badge-pill">📥 1-Click Multi-Tab Saver</div>
-      <div class="badge-pill">🧹 Duplicate Cleaner</div>
-      <div class="badge-pill">🤖 Smart AI Genres</div>
+  <div class="hero-text">
+    <div class="badge">YouTube Tab Manager &amp; Cleaner</div>
+    <h1>Your YouTube tabs are a <span>playlist you haven't saved yet.</span></h1>
+    <p>Save open video tabs into playlists, purge duplicate entries, build instant queues, and free up browser memory in 1-click.</p>
+    <div class="pill-row">
+      <div class="pill">⚡ 1-Click Tab Saving</div>
+      <div class="pill">🧹 Duplicate Cleaner</div>
+      <div class="pill">🧠 Smart AI Topics</div>
+      <div class="pill">🔒 100% Private</div>
     </div>
   </div>
 
-  <div class="right-card">
-    <div style="display:flex; align-items:center; gap:10px; border-bottom:1px solid #2e2e2e; padding-bottom:10px;">
-      <div style="width:36px; height:36px; background:#ff0033; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:18px;">▶</div>
-      <div>
-        <div style="font-weight:700; font-size:16px;">YouTube Toolkit</div>
-        <div style="font-size:11px; color:#2ba640;">● Ready to Organize</div>
+  <div class="showcase-card">
+    <div class="mock-header">
+      <div style="display:flex; align-items:center; gap:10px; font-weight:800; font-size:16px;">
+        <div style="width:30px; height:30px; background:#ff0033; border-radius:6px; display:flex; align-items:center; justify-content:center; font-weight:bold;">▶</div>
+        <span>TabFlow</span>
       </div>
+      <span style="font-size:12px; color:#10b981; font-weight:700;">● 24 Tabs Ready</span>
     </div>
-    <div style="background:#141414; padding:12px; border-radius:8px; border:1px solid #2e2e2e; font-size:12px;">
-      <div style="color:#aaa;">Found Across 4 Playlists:</div>
-      <div style="color:#ff0033; font-weight:bold; margin-top:4px;">12 Duplicate Overlaps Cleaned</div>
+
+    <div class="mock-tab">
+      <div style="width:40px; height:26px; background:#ff0033; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:10px; color:#fff;">HD</div>
+      <span style="flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">React 19 &amp; Next.js 15 Full Architecture</span>
+      <span style="color:#10b981;">✓</span>
     </div>
-    <div style="background:#ff0033; color:#fff; padding:12px; border-radius:8px; text-align:center; font-weight:bold; font-size:14px;">
-      💾 Save All Videos to Playlist
+
+    <div class="mock-tab">
+      <div style="width:40px; height:26px; background:#38bdf8; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:10px; color:#fff;">HD</div>
+      <span style="flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Synthwave Focus Beats 2026 (Live)</span>
+      <span style="color:#10b981;">✓</span>
+    </div>
+
+    <div class="mock-btn">
+      <span>Save Tabs &amp; Clean Duplicates &rarr;</span>
     </div>
   </div>
 </body>
