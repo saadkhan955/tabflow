@@ -2,12 +2,12 @@
 set -e
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
-ZIP_NAME="youtube-tabs-to-playlist-v1.0.0.zip"
+ZIP_NAME="tabflow-v1.0.0.zip"
 TARGET="$DIR/$ZIP_NAME"
 
-echo "📦 Packaging Chrome Extension from: $DIR"
+echo "📦 Packaging TabFlow Chrome Extension from: $DIR"
 
-rm -f "$TARGET"
+rm -f "$TARGET" "$DIR/youtube-tabs-to-playlist-v1.0.0.zip"
 
 (
   cd "$DIR"
@@ -19,6 +19,9 @@ rm -f "$TARGET"
     scripts/youtube-api.js \
     scripts/lucide.min.js \
     icons/
+
+  # Also provide duplicate named file for backward compatibility
+  cp "$TARGET" "$DIR/youtube-tabs-to-playlist-v1.0.0.zip"
 )
 
 echo "✅ Production package created successfully: $TARGET"
