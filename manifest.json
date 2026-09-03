@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "TabFlow for YouTube",
+  "name": "TabFlow",
   "version": "1.0.0",
-  "description": "Save all open YouTube tabs into a specific playlist, create new playlists, or launch instant video queues.",
+  "description": "Save open YouTube video tabs into playlists, organize video collections, and launch instant video queues.",
   "permissions": [
     "tabs",
     "storage",
@@ -14,7 +14,7 @@
   ],
   "action": {
     "default_popup": "popup/popup.html",
-    "default_title": "TabFlow for YouTube",
+    "default_title": "TabFlow",
     "default_icon": {
       "16": "icons/icon-16.png",
       "32": "icons/icon-32.png",
