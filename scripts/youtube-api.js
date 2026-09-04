@@ -2,7 +2,7 @@
  * YouTube Data API v3 Client with Ultra-High-Precision Genre Classifier & Free AI Summarizer
  */
 
-const DEFAULT_CLIENT_ID = '526923629448-g5fhoc4k2u7grpjtb11j1t4sidq3njki.apps.googleusercontent.com';
+const DEFAULT_CLIENT_ID = '1079325521032-4hknl2lcu2936mseomrfd09j27uq8ghl.apps.googleusercontent.com';
 const YOUTUBE_API_BASE = 'https://www.googleapis.com/youtube/v3';
 const YOUTUBE_OAUTH_SCOPES = [
   'https://www.googleapis.com/auth/youtube',
