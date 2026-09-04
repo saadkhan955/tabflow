@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy — TabFlow</title>
-  <meta name="description" content="Privacy Policy for TabFlow Chrome Extension." />
+  <meta name="description" content="Privacy Policy and Data Protection Disclosures for TabFlow Chrome Extension." />
   <link rel="canonical" href="https://tfy.khansaad.dev/privacy.html" />
 
   <meta name="theme-color" content="#ff0033" />
@@ -12,10 +12,6 @@
   <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-128.png" />
   <link rel="shortcut icon" href="favicon.ico" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
     :root {
@@ -35,8 +31,8 @@
       :root {
         --text-main: #f8fafc;
         --text-muted: #94a3b8;
-        --bg-page: #0b0f19;
-        --bg-card: #131b2e;
+        --bg-page: #080c16;
+        --bg-card: #0f172a;
         --border-color: #1e293b;
       }
     }
@@ -48,7 +44,7 @@
     }
 
     body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg-page);
       color: var(--text-main);
       line-height: 1.7;
@@ -100,52 +96,79 @@
     }
 
     .last-updated {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-bottom: 24px;
       display: block;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      margin-bottom: 24px;
     }
 
     .highlight-box {
-      background: rgba(255, 0, 51, 0.08);
+      background: rgba(255, 0, 51, 0.06);
       border-left: 4px solid var(--primary);
       padding: 16px 20px;
       border-radius: var(--radius-sm);
-      margin: 20px 0 28px;
-      color: var(--text-main);
+      margin-bottom: 32px;
+      font-size: 0.95rem;
+    }
+
+    .protection-box {
+      background: rgba(16, 185, 129, 0.06);
+      border-left: 4px solid #10b981;
+      padding: 16px 20px;
+      border-radius: var(--radius-sm);
+      margin: 20px 0;
       font-size: 0.95rem;
     }
 
     h2 {
       font-size: 1.35rem;
       font-weight: 700;
-      margin: 32px 0 12px;
+      margin: 32px 0 16px;
       color: var(--text-main);
       border-bottom: 1px solid var(--border-color);
       padding-bottom: 8px;
     }
 
-    p, ul {
-      color: var(--text-muted);
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 20px 0 8px;
+      color: var(--text-main);
+    }
+
+    p {
       margin-bottom: 16px;
-      font-size: 0.98rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
     }
 
     ul {
-      padding-left: 20px;
+      margin-bottom: 16px;
+      padding-left: 24px;
     }
 
     li {
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    li strong {
+      color: var(--text-main);
     }
 
     code {
-      background: rgba(255, 0, 51, 0.1);
-      color: #ff4e45;
+      background: rgba(0, 0, 0, 0.06);
       padding: 2px 6px;
       border-radius: 4px;
-      font-family: monospace;
-      font-size: 0.9em;
+      font-size: 0.85em;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      code {
+        background: rgba(255, 255, 255, 0.1);
+      }
     }
 
     footer {
@@ -179,60 +202,79 @@
 
     <main class="card">
       <h1>Privacy Policy</h1>
-      <span class="last-updated">Last Updated: September 1, 2026 • Effective Date: January 1, 2026</span>
+      <span class="last-updated">Last Updated: September 4, 2026 • Effective Date: January 1, 2026</span>
 
       <div class="highlight-box">
-        <strong>Core Summary:</strong> TabFlow is a client-side browser extension that operates locally on your machine. We do NOT collect, sell, monetize, track, or transmit your personal data, browser history, or Google/YouTube credentials to external third-party servers. All interactions with the YouTube Data API occur directly and securely between your browser and Google's official API servers.
+        <strong>Core Privacy Summary:</strong> TabFlow is a client-side browser extension built on a local-first architecture. TabFlow does NOT own, operate, or maintain any external database servers. We do NOT collect, sell, monetize, track, or transmit your personal data, browser history, or Google credentials to any third parties. All interactions with the YouTube Data API occur directly and securely between your browser and Google's official API servers.
       </div>
 
       <h2>1. Information We Access and How It Is Used</h2>
-      <p>TabFlow only accesses the minimum necessary browser permissions and Google APIs required to perform its single purpose:</p>
+      <p>TabFlow only accesses the minimum necessary browser permissions and Google APIs required to execute user-requested actions:</p>
       <ul>
         <li><strong>Open Browser Tabs (<code>tabs</code> permission):</strong>
-          <p>Used strictly in memory to inspect active browser tabs to detect open YouTube video URLs (matching <code>youtube.com/watch</code>, <code>/shorts/</code>, <code>/live/</code>, or <code>youtu.be</code>) and extract video titles and IDs. Tab URLs are processed locally and are never logged, stored on external servers, or transmitted anywhere.</p>
+          <p>Used strictly in local memory to inspect active browser tabs to detect open YouTube video URLs (matching <code>youtube.com/watch</code>, <code>/shorts/</code>, <code>/live/</code>, or <code>youtu.be</code>) and extract video titles and IDs. Tab URLs are processed locally and are never stored on external servers or transmitted to third parties.</p>
         </li>
-        <li><strong>Google Identity & YouTube Data API v3 (<code>https://www.googleapis.com/auth/youtube</code>):</strong>
-          <p>When you explicitly sign in via Google OAuth2, the extension receives a temporary OAuth token directly from Google to interact with the YouTube Data API for the following explicit actions initiated by you:</p>
+        <li><strong>Google Identity &amp; YouTube Data API v3 (<code>https://www.googleapis.com/auth/youtube</code> &amp; <code>https://www.googleapis.com/auth/youtube.force-ssl</code>):</strong>
+          <p>When you explicitly connect your YouTube account via Google OAuth 2.0, TabFlow uses temporary authorization tokens solely to perform explicit user-initiated actions via the official YouTube Data API v3:</p>
           <ul>
-            <li>Displaying your existing YouTube playlists in the dropdown selector.</li>
-            <li>Adding selected video tabs to your chosen playlist.</li>
-            <li>Creating a new playlist on your channel at your request.</li>
-            <li>Scanning your playlists for duplicate video entries and deleting duplicate copies when you click clean.</li>
-            <li>Fetching video topic categories strictly for genre classification.</li>
+            <li><code>playlists.list</code>: Display your existing playlists in the dropdown menu.</li>
+            <li><code>playlists.insert</code>: Create new public, unlisted, or private playlists upon your direct request.</li>
+            <li><code>playlistItems.insert</code>: Batch add selected video tabs into your chosen playlist.</li>
+            <li><code>playlistItems.list</code>: Retrieve video entries within a playlist to detect duplicates.</li>
+            <li><code>playlistItems.delete</code>: Remove confirmed duplicate video entries when you click "Clean Duplicates".</li>
           </ul>
         </li>
         <li><strong>Local Storage (<code>storage</code> permission):</strong>
-          <p>Used to store your local interface preferences (such as auto-close tabs preference, selected AI provider, and temporary playlist cache) directly in your browser's local <code>chrome.storage</code>. This data never leaves your device.</p>
+          <p>Used to store your local interface preferences (such as dark mode toggle, auto-close tabs preference, and temporary client-side cache) directly in your browser's local <code>chrome.storage.local</code>. This data never leaves your device.</p>
         </li>
       </ul>
 
-      <h2>2. Google API Services User Data Policy Compliance</h2>
-      <p>TabFlow's use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank">Google API Services User Data Policy</a>, including the <strong>Limited Use</strong> requirements.</p>
+      <h2>2. Data Protection Mechanisms for Sensitive Data</h2>
+      <p>We implement comprehensive technical and organizational data protection mechanisms to secure all sensitive user data, access tokens, and API communications:</p>
+      
+      <div class="protection-box">
+        <strong>Security &amp; Data Protection Standards:</strong>
+        <ul style="margin-top: 10px; margin-bottom: 0;">
+          <li><strong>Encryption in Transit:</strong> 100% of network requests to Google OAuth and YouTube Data API endpoints are strictly enforced over Transport Layer Security (TLS 1.2+ / HTTPS). Plaintext or unencrypted data transmission is technically impossible.</li>
+          <li><strong>Encryption at Rest &amp; Local Sandboxing:</strong> All OAuth tokens, cached playlist IDs, and user settings are stored locally within Chrome's sandboxed, origin-isolated <code>chrome.storage.local</code> database on your device. TabFlow does not maintain any external backend servers, remote databases, or cloud storage.</li>
+          <li><strong>Ephemeral Memory Processing:</strong> Tab titles, URLs, and video metadata are processed transiently in memory during active browser sessions and are purged immediately upon completing the playlist save action or closing the popup.</li>
+          <li><strong>Principle of Least Privilege:</strong> Tokens are requested with minimal required scopes and are held ephemerally. Tokens are never logged to console outputs, exported, or shared.</li>
+        </ul>
+      </div>
+
+      <h2>3. Google API Services User Data Policy &amp; Limited Use Compliance</h2>
+      <p>TabFlow's use and transfer of information received from Google APIs strictly adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener">Google API Services User Data Policy</a>, including the <strong>Limited Use</strong> requirements.</p>
       <p>Specifically:</p>
       <ul>
         <li>We only use access to YouTube Data API data to provide and improve user-facing features that are prominent in the user interface.</li>
         <li>We do not transfer or disclose your Google user data to third parties.</li>
         <li>We do not use your Google user data for serving advertisements, including retargeting, personalized, or interest-based advertising.</li>
         <li>We do not use your Google user data to train generalized AI or machine learning models.</li>
-        <li>Human beings do not read your data unless you have given explicit consent for debugging issues, or as required by applicable law.</li>
+        <li>Human beings do not read your data under any circumstances.</li>
       </ul>
 
-      <h2>3. Data Retention and Deletion</h2>
-      <p>Because all data is processed locally in your browser session, TabFlow does not retain your data on external databases. You may revoke access at any time by signing out within the extension or by visiting <a href="https://myaccount.google.com/permissions" target="_blank">Google Account Permissions</a>. Removing the extension immediately purges all locally stored preferences.</p>
-
-      <h2>4. Third-Party Services and Analytics</h2>
-      <p>TabFlow does not contain third-party analytics trackers, cookies, or telemetry libraries. The extension communicates directly with:</p>
+      <h2>4. Data Retention, Revocation, and Deletion</h2>
+      <p>Because all data is processed locally in your browser session, TabFlow does not retain your data on external databases:</p>
       <ul>
-        <li><code>https://www.googleapis.com</code> — Official Google & YouTube Data API endpoints.</li>
+        <li><strong>In-App Sign Out:</strong> Clicking "Sign Out" inside the TabFlow settings immediately purges all active OAuth tokens and temporary playlist caches from local storage.</li>
+        <li><strong>Google Account Revocation:</strong> You can revoke TabFlow's access to your Google Account at any time by visiting <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">Google Account Permissions</a>.</li>
+        <li><strong>Extension Uninstallation:</strong> Removing the extension from Chrome immediately and permanently deletes all locally stored preferences and sandboxed data from your machine.</li>
       </ul>
 
-      <h2>5. Contact Us</h2>
-      <p>If you have any questions, feedback, or privacy inquiries regarding TabFlow, please contact the developer:</p>
+      <h2>5. Third-Party Services and Telemetry Disclosure</h2>
+      <p>TabFlow contains zero third-party analytics trackers, cookies, or telemetry libraries. The extension communicates directly only with:</p>
+      <ul>
+        <li><code>https://www.googleapis.com</code> — Official Google &amp; YouTube Data API endpoints.</li>
+        <li><code>https://accounts.google.com</code> — Official Google OAuth 2.0 authentication service.</li>
+      </ul>
+
+      <h2>6. Contact and Data Protection Officer</h2>
+      <p>If you have any questions, feedback, or security inquiries regarding TabFlow's data protection practices, please contact:</p>
       <ul>
         <li><strong>Developer:</strong> Saad Khan</li>
         <li><strong>Email:</strong> <a href="mailto:contact@khansaad.dev">contact@khansaad.dev</a></li>
-        <li><strong>Website:</strong> <a href="https://tfy.khansaad.dev/">https://tfy.khansaad.dev/</a></li>
-        <li><strong>GitHub:</strong> <a href="https://github.com/saadkhan955/youtube-tabs-to-playlist" target="_blank">saadkhan955/youtube-tabs-to-playlist</a></li>
+        <li><strong>Application Homepage:</strong> <a href="https://tfy.khansaad.dev/">https://tfy.khansaad.dev/</a></li>
+        <li><strong>GitHub Repository:</strong> <a href="https://github.com/saadkhan955/youtube-tabs-to-playlist" target="_blank" rel="noopener">saadkhan955/youtube-tabs-to-playlist</a></li>
       </ul>
     </main>
 
