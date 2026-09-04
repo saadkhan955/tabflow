@@ -568,9 +568,19 @@ async function checkAuth(interactive = false) {
     }
 
     state.authToken = token;
-    state.userProfile = await fetchUserProfile(token);
+    try {
+      state.userProfile = await fetchUserProfile(token);
+    } catch (e) {
+      console.warn('Could not fetch user profile:', e);
+    }
+
     updateAuthUI(true);
-    await loadPlaylists(false);
+
+    try {
+      await loadPlaylists(false);
+    } catch (e) {
+      console.warn('Could not fetch initial playlists:', e);
+    }
   } catch (err) {
     state.authToken = null;
     state.userProfile = null;
