@@ -19,9 +19,6 @@ rm -f "$TARGET" "$DIR/youtube-tabs-to-playlist-v1.0.0.zip"
     scripts/youtube-api.js \
     scripts/lucide.min.js \
     icons/
-
-  # Also provide duplicate named file for backward compatibility
-  cp "$TARGET" "$DIR/youtube-tabs-to-playlist-v1.0.0.zip"
 )
 
 echo "✅ Production package created successfully: $TARGET"
