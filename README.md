@@ -67,7 +67,7 @@ Tabs clutter and unorganized watch queues slow down browsing and consume substan
 ## Directory Structure
 
 ```text
-youtube-tabs-to-playlist/
+tabflow/
 ├── manifest.json              # Extension Manifest V3 configuration
 ├── background.js              # Background service worker
 ├── popup/
@@ -94,8 +94,8 @@ youtube-tabs-to-playlist/
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/saadkhan955/youtube-tabs-to-playlist.git
-cd youtube-tabs-to-playlist
+git clone https://github.com/saadkhan955/tabflow.git
+cd tabflow
 ```
 
 ### 2. Install Dependencies & Build Styles
@@ -107,7 +107,7 @@ npm run build
 ### 3. Load into Google Chrome
 1. Open Google Chrome and navigate to `chrome://extensions/`.
 2. Enable **Developer mode** using the toggle in the top-right corner.
-3. Click **Load unpacked** and select the `youtube-tabs-to-playlist` folder.
+3. Click **Load unpacked** and select the `tabflow` folder.
 4. Pin the extension to your toolbar.
 
 ---
