@@ -1,41 +1,48 @@
-# Chrome Web Store Listing: YouTube Tabs to Playlist
+# Chrome Web Store Listing: TabFlow
 
-## Store Listing Metadata
-
-- **Name**: YouTube Tabs to Playlist
-- **Summary**: Save all open YouTube tabs into any playlist, create new playlists, or launch instant watch queues.
-- **Category**: Productivity
-- **Language**: English
+- **Extension ID:** `gfdjgilpbpkooldnpghhgpfeacfllebm`
+- **Store URL:** `https://chromewebstore.google.com/detail/tabflow/gfdjgilpbpkooldnpghhgpfeacfllebm`
 
 ---
 
-## Detailed Description
+## 1. Store Listing Details
 
-Collect, organize, and save all open YouTube video tabs into a playlist with one click.
-
-Whether you have dozens of YouTube tabs open across multiple windows or want to organize your watch queue for later, YouTube Tabs to Playlist scans your browser tabs, extracts video details, and adds them directly to your YouTube playlists.
-
-### Key Features:
-- **Scan & Filter**: Automatically detects YouTube tabs (standard videos, Shorts, live streams, and youtu.be links).
-- **Target Any Playlist**: Select from your existing YouTube playlists, create a new playlist on the fly, or specify a playlist ID/URL.
-- **Instant YouTube Queue (Zero-Config)**: Launch a native YouTube multi-video queue instantly without configuring API keys.
-- **Tab Cleanup**: Automatically close saved tabs after adding them to keep your browser organized and free up RAM.
-- **Export Formats**: Copy URLs, video IDs, Markdown links, or raw JSON with one click.
+- **Name:** TabFlow
+- **Summary:** Save open YouTube tabs to playlists, clean duplicates, cluster by topic, or launch instant queues.
+- **Category:** Productivity
+- **Language:** English
+- **Website:** `https://tfy.khansaad.dev`
+- **Privacy Policy URL:** `https://tfy.khansaad.dev/privacy`
 
 ---
 
-## Permissions Justification
+## 2. Detailed Description
 
-| Permission / Host | Plain-English Reason for Reviewers |
-|-------------------|-----------------------------------|
-| `tabs` | Needed to detect open YouTube tabs, read video URLs and titles to extract video IDs, and optionally close tabs after saving. |
-| `storage` | Needed to store user preferences, cached playlist lists, and optional OAuth client configuration locally. |
-| `identity` | Needed to authenticate with Google's YouTube Data API v3 so users can fetch and save videos to their YouTube playlists. |
-| `*://*.youtube.com/*` | Needed to communicate with YouTube endpoints and extract video identifiers. |
-| `https://www.googleapis.com/*` | Needed to call the YouTube Data API v3 endpoints (`playlists`, `playlistItems`, `channels`). |
+Turn your open YouTube tabs into organized playlists in seconds.
+
+TabFlow solves tab overload by automatically detecting open YouTube video tabs across all your browser windows and saving them directly into any YouTube playlist—or launching an instant queue in a single tab to free browser RAM.
+
+### ⚡ Key Features:
+• **Batch Save Tabs:** Detect all open YouTube video tabs (videos, Shorts, live streams) and save them to any existing playlist or create a new one instantly.
+• **Instant Video Queue:** Launch a continuous YouTube queue in a single tab from your open video tabs, eliminating tab clutter without requiring API login.
+• **Duplicate Video Cleaner:** Scan your YouTube playlists to detect duplicate videos and clean up repeated entries automatically.
+• **Smart Topic Organization:** Categorize videos within your playlists by topic to create focused playlists for study, entertainment, or research.
+• **Flexible Export:** Copy or export your selected video tabs as Markdown lists, JSON files, plain URLs, or video IDs for easy note-taking.
+• **Private & Local-First:** 100% on-device processing. No external databases, zero tracking, and official Google-verified OAuth authentication.
 
 ---
 
-## Privacy & Data Handling
-- **No Remote Tracking**: The extension does not collect or transmit personal user data to external third-party servers.
-- **Direct API**: Requests to the YouTube Data API communicate directly from the user's browser to Google's official endpoints (`https://www.googleapis.com`).
+## 3. Permissions Justifications (Copy & Paste for Store Reviewers)
+
+| Permission / Host | Justification for Chrome Web Store Reviewers |
+| :--- | :--- |
+| **`tabs`** | Required to detect open YouTube video tabs across browser windows, extract video IDs/titles to save them into playlists, and optionally close tabs after saving to free browser memory. |
+| **`storage`** | Required to store user interface preferences (theme, auto-close preference) and temporary client-side playlist caches locally on the user's device. |
+| **`identity`** | Required to authenticate with the official Google YouTube Data API v3 using Google OAuth 2.0 so users can fetch and save videos to their own YouTube playlists. |
+| **`*://*.youtube.com/*`** | Required to parse active YouTube tab URLs and communicate with YouTube video pages. |
+| **`https://www.googleapis.com/*`** | Required to communicate directly with Google's verified YouTube Data API v3 endpoints (`playlists`, `playlistItems`, `channels`). |
+
+---
+
+## 4. Single-Purpose Compliance
+TabFlow's single purpose is to help users organize and save their open YouTube video tabs into YouTube playlists and remove duplicate entries.
