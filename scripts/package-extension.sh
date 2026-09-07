@@ -18,7 +18,8 @@ rm -f "$TARGET" "$DIR/youtube-tabs-to-playlist-v1.0.0.zip"
     scripts/tab-extractor.js \
     scripts/youtube-api.js \
     scripts/lucide.min.js \
-    icons/
+    icons/ \
+    -x "*.DS_Store" -x "*__MACOSX*"
 )
 
 echo "✅ Production package created successfully: $TARGET"
