@@ -1,6 +1,6 @@
 {
   "name": "tabflow",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A sleek, modern Manifest V3 Chrome Extension that scans all your open YouTube video tabs across windows, saves them into playlists, removes duplicate videos, and auto-organizes your playlists into smart genres.",
   "main": "background.js",
   "scripts": {

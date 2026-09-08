@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "TabFlow",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Save open YouTube video tabs into playlists, organize video collections, and launch instant video queues.",
   "permissions": [
     "tabs",

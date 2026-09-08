@@ -2,12 +2,13 @@
 set -e
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
-ZIP_NAME="tabflow-v1.0.0.zip"
+VERSION=$(grep '"version"' "$DIR/manifest.json" | head -1 | awk -F'"' '{print $4}')
+ZIP_NAME="tabflow-v${VERSION}.zip"
 TARGET="$DIR/$ZIP_NAME"
 
-echo "📦 Packaging TabFlow Chrome Extension from: $DIR"
+echo "📦 Packaging TabFlow Chrome Extension v${VERSION} from: $DIR"
 
-rm -f "$TARGET" "$DIR/youtube-tabs-to-playlist-v1.0.0.zip"
+rm -f "$TARGET" "$DIR/tabflow.zip"
 
 (
   cd "$DIR"
@@ -22,5 +23,6 @@ rm -f "$TARGET" "$DIR/youtube-tabs-to-playlist-v1.0.0.zip"
     -x "*.DS_Store" -x "*__MACOSX*"
 )
 
-echo "✅ Production package created successfully: $TARGET"
-ls -lh "$TARGET"
+cp "$TARGET" "$DIR/tabflow.zip"
+echo "✅ Production package created successfully: $TARGET (and tabflow.zip)"
+ls -lh "$TARGET" "$DIR/tabflow.zip"
