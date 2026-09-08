@@ -248,6 +248,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   await initTheme();
   refreshIcons();
   await loadSavedOptions();
+
+  // Listen for storage changes from background auth
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === 'local' && (changes.activeToken || changes.userProfile)) {
+      checkAuth(false);
+    }
+  });
+
   await checkAuth(false);
   await refreshTabs();
 });
@@ -568,10 +576,20 @@ async function checkAuth(interactive = false) {
     }
 
     state.authToken = token;
-    try {
-      state.userProfile = await fetchUserProfile(token);
-    } catch (e) {
-      console.warn('Could not fetch user profile:', e);
+
+    // Fast-path: read cached profile from local storage if available
+    const { userProfile } = await chrome.storage.local.get('userProfile');
+    if (userProfile) {
+      state.userProfile = userProfile;
+    } else {
+      try {
+        state.userProfile = await fetchUserProfile(token);
+        if (state.userProfile) {
+          await chrome.storage.local.set({ userProfile: state.userProfile });
+        }
+      } catch (e) {
+        console.warn('Could not fetch user profile:', e);
+      }
     }
 
     updateAuthUI(true);
@@ -623,11 +641,32 @@ function updateAuthUI(isAuthenticated) {
 }
 
 async function handleSignIn() {
-  await checkAuth(true);
+  const btn = elements.btnSignIn;
+  const originalHtml = btn ? btn.innerHTML : '';
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i data-lucide="loader-2" class="spinner" style="width:14px;height:14px;"></i> Signing In...';
+    refreshIcons();
+  }
+
+  try {
+    await checkAuth(true);
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = originalHtml;
+      refreshIcons();
+    }
+  }
 }
 
 async function handleSignOut() {
   await clearAuthSession();
+  try {
+    await chrome.runtime.sendMessage({ action: 'CLEAR_AUTH' });
+  } catch {
+    // Non-blocking
+  }
   state.authToken = null;
   state.userProfile = null;
   state.userPlaylists = [];

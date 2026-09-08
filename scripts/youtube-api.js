@@ -2,7 +2,7 @@
  * YouTube Data API v3 Client with Ultra-High-Precision Genre Classifier & Free AI Summarizer
  */
 
-const DEFAULT_CLIENT_ID = '1079325521032-4hknl2lcu2936mseomrfd09j27uq8ghl.apps.googleusercontent.com';
+export const DEFAULT_CLIENT_ID = '1079325521032-4hknl2lcu2936mseomrfd09j27uq8ghl.apps.googleusercontent.com';
 const YOUTUBE_API_BASE = 'https://www.googleapis.com/youtube/v3';
 const YOUTUBE_OAUTH_SCOPES = [
   'https://www.googleapis.com/auth/youtube',
@@ -10,45 +10,57 @@ const YOUTUBE_OAUTH_SCOPES = [
 ];
 
 /**
- * Retrieves the active access token based on stored settings or WebAuthFlow
+ * Retrieves the active access token based on stored settings or background OAuth flow
  */
 export async function getAccessToken(interactive = true) {
+  // 1. Check custom token override
   const settings = await chrome.storage.sync.get(['customToken', 'customClientId']);
   if (settings.customToken && settings.customToken.trim()) {
     return settings.customToken.trim();
   }
 
+  // 2. Check cached valid token in local storage
   const local = await chrome.storage.local.get(['activeToken', 'tokenExpiry']);
   if (local.activeToken && local.tokenExpiry && Date.now() < local.tokenExpiry) {
     return local.activeToken;
   }
 
-  const clientId = (settings.customClientId && settings.customClientId.trim()) || DEFAULT_CLIENT_ID;
-
-  if (clientId) {
-    return authenticateWithWebAuthFlow(clientId, interactive);
-  }
-
+  // 3. If interactive, delegate to background service worker so popup closure doesn't abort the auth callback
   if (interactive) {
-    const err = new Error('MISSING_CLIENT_ID');
-    err.code = 'MISSING_CLIENT_ID';
-    throw err;
+    try {
+      const response = await chrome.runtime.sendMessage({ action: 'START_AUTH', interactive: true });
+      if (response?.success && response.token) {
+        return response.token;
+      }
+      if (response?.error) {
+        throw new Error(response.error);
+      }
+    } catch (msgErr) {
+      console.warn('Background service worker auth message failed, trying direct flow:', msgErr);
+      const clientId = (settings.customClientId && settings.customClientId.trim()) || DEFAULT_CLIENT_ID;
+      if (clientId) {
+        return authenticateWithWebAuthFlow(clientId, true);
+      }
+      throw msgErr;
+    }
   }
 
+  // 4. Non-interactive check with no cached token: return null cleanly without prompting
   return null;
 }
 
 /**
- * Standard WebAuthFlow for Google OAuth
+ * Standard WebAuthFlow for Google OAuth with full hash and query param support
  */
-async function authenticateWithWebAuthFlow(clientId, interactive = true) {
+export async function authenticateWithWebAuthFlow(clientId, interactive = true) {
   const redirectUri = chrome.identity.getRedirectURL();
   const scopeString = encodeURIComponent(YOUTUBE_OAUTH_SCOPES.join(' '));
+  const promptParam = interactive ? '&prompt=select_account%20consent' : '';
   const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${encodeURIComponent(
     clientId
   )}&response_type=token&redirect_uri=${encodeURIComponent(
     redirectUri
-  )}&scope=${scopeString}&prompt=consent`;
+  )}&scope=${scopeString}${promptParam}`;
 
   try {
     const responseUrl = await chrome.identity.launchWebAuthFlow({
@@ -61,18 +73,36 @@ async function authenticateWithWebAuthFlow(clientId, interactive = true) {
     }
 
     const url = new URL(responseUrl);
-    const hash = url.hash.substring(1);
-    const params = new URLSearchParams(hash);
-    const accessToken = params.get('access_token');
-    const expiresIn = params.get('expires_in');
+    // Parse both hash (#access_token=...) and query parameters (?access_token=...)
+    const hashParams = url.hash ? new URLSearchParams(url.hash.substring(1)) : new URLSearchParams();
+    const searchParams = url.search ? new URLSearchParams(url.search) : new URLSearchParams();
+
+    const error = hashParams.get('error') || searchParams.get('error');
+    const errorDesc = hashParams.get('error_description') || searchParams.get('error_description');
+    if (error) {
+      throw new Error(`Google Auth error: ${error}${errorDesc ? ` - ${errorDesc}` : ''}`);
+    }
+
+    const accessToken = hashParams.get('access_token') || searchParams.get('access_token');
+    const expiresIn = hashParams.get('expires_in') || searchParams.get('expires_in');
 
     if (!accessToken) {
-      const error = params.get('error') || 'Access token missing in response';
-      throw new Error(`Google Auth error: ${error}`);
+      throw new Error('Access token missing in Google response');
     }
 
     const expiryTime = Date.now() + (parseInt(expiresIn || '3600', 10) * 1000);
     await chrome.storage.local.set({ activeToken: accessToken, tokenExpiry: expiryTime });
+
+    // Pre-fetch and cache user profile in local storage
+    try {
+      const profile = await fetchUserProfile(accessToken);
+      if (profile) {
+        await chrome.storage.local.set({ userProfile: profile });
+      }
+    } catch (profErr) {
+      console.warn('Could not prefetch user profile:', profErr);
+    }
+
     return accessToken;
   } catch (err) {
     throw new Error(err.message || 'OAuth authentication failed');
