@@ -1,6 +1,7 @@
 # TabFlow — Project Overview & LLM Context Specification
 
 ## 1. Executive Summary
+
 **TabFlow** is a production Manifest V3 (MV3) Google Chrome Extension that solves browser tab clutter and memory exhaustion caused by hoarded YouTube tabs. It scans active YouTube video tabs across all browser windows, aggregates video metadata locally, and enables users to batch-save them to YouTube playlists, purge duplicate entries, cluster videos by genre, or launch an instant watch queue in a single tab.
 
 - **Item ID (Chrome Web Store):** `gfdjgilpbpkooldnpghhgpfeacfllebm`
@@ -56,7 +57,7 @@
 
 ## 4. Key Files & Directory Structure
 
-```
+```text
 /Users/saadkhan/Misc/tabflow/
 ├── manifest.json              # MV3 configuration, permissions, icons, background worker
 ├── background.js              # Service worker: tab badge counter & persistent OAuth handler
@@ -80,18 +81,21 @@
 ## 5. Critical Engineering Nuances & Invariants
 
 ### A. OAuth 2.0 & Background Service Worker Isolation
+
 - **The Problem:** In Chrome, extension popups close immediately when losing focus. When `chrome.identity.launchWebAuthFlow` opened the Google OAuth window, `popup.js` was destroyed, aborting token callbacks.
 - **The Solution:** Authentication is delegated to `background.js` via `chrome.runtime.sendMessage({ action: 'START_AUTH' })`.
 - `background.js` executes `launchWebAuthFlow`, parses both hash fragments (`#access_token=...`) and query parameters (`?access_token=...`), and saves `activeToken`, `tokenExpiry`, and `userProfile` into `chrome.storage.local`.
 - `popup.js` listens to `chrome.storage.onChanged` to reactively update the UI the moment the background flow completes.
 
 ### B. Google Cloud Redirect URIs
+
 - The Google Cloud OAuth 2.0 Client ID is `1079325521032-4hknl2lcu2936mseomrfd09j27uq8ghl.apps.googleusercontent.com` (Project: `tabflow-app-prod`).
 - Authorized Redirect URIs for Chrome Web Store production:
   - `https://gfdjgilpbpkooldnpghhgpfeacfllebm.chromiumapp.org/`
   - `https://gfdjgilpbpkooldnpghhgpfeacfllebm.chromiumapp.org`
 
 ### C. Permissions & Store Review Compliance
+
 - **`tabs`:** Required solely to inspect active browser tabs, read URLs to extract YouTube video IDs, and close saved tabs upon user consent.
 - **`storage`:** Required for local preferences (theme, auto-close) and caching playlist metadata.
 - **`identity`:** Required for Google OAuth 2.0 authorization to access user YouTube playlists.
