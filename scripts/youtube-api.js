@@ -10,7 +10,7 @@ const YOUTUBE_OAUTH_SCOPES = [
 ];
 
 /**
- * Retrieves the active access token based on stored settings or background OAuth flow
+ * Retrieves the active access token based on stored settings, proactive cache buffer, or background silent renewal
  */
 export async function getAccessToken(interactive = true) {
   // 1. Check custom token override
@@ -19,17 +19,31 @@ export async function getAccessToken(interactive = true) {
     return settings.customToken.trim();
   }
 
-  // 2. Check cached valid token in local storage
-  const local = await chrome.storage.local.get(['activeToken', 'tokenExpiry']);
-  if (local.activeToken && local.tokenExpiry && Date.now() < local.tokenExpiry) {
+  // 2. Check cached valid token in local storage (with a 5-minute safety buffer)
+  const local = await chrome.storage.local.get(['activeToken', 'tokenExpiry', 'hasSignedIn']);
+  const bufferMs = 5 * 60 * 1000; // 5 minutes before actual expiry
+  if (local.activeToken && local.tokenExpiry && (Date.now() + bufferMs) < local.tokenExpiry) {
     return local.activeToken;
   }
 
-  // 3. If interactive, delegate to background service worker so popup closure doesn't abort the auth callback
+  // 3. If token is near expiry or expired, but user previously logged in, try silent background refresh
+  if (local.hasSignedIn || local.activeToken) {
+    try {
+      const response = await chrome.runtime.sendMessage({ action: 'START_AUTH', interactive: false });
+      if (response?.success && response.token) {
+        return response.token;
+      }
+    } catch {
+      // Silent refresh message failed, will try interactive if requested
+    }
+  }
+
+  // 4. If interactive, delegate to background service worker so popup closure doesn't abort the auth callback
   if (interactive) {
     try {
       const response = await chrome.runtime.sendMessage({ action: 'START_AUTH', interactive: true });
       if (response?.success && response.token) {
+        await chrome.storage.local.set({ hasSignedIn: true });
         return response.token;
       }
       if (response?.error) {
@@ -39,13 +53,15 @@ export async function getAccessToken(interactive = true) {
       console.warn('Background service worker auth message failed, trying direct flow:', msgErr);
       const clientId = (settings.customClientId && settings.customClientId.trim()) || DEFAULT_CLIENT_ID;
       if (clientId) {
-        return authenticateWithWebAuthFlow(clientId, true);
+        const token = await authenticateWithWebAuthFlow(clientId, true);
+        await chrome.storage.local.set({ hasSignedIn: true });
+        return token;
       }
       throw msgErr;
     }
   }
 
-  // 4. Non-interactive check with no cached token: return null cleanly without prompting
+  // 5. Non-interactive check with no valid token and failed silent refresh: return null cleanly
   return null;
 }
 
@@ -55,6 +71,7 @@ export async function getAccessToken(interactive = true) {
 export async function authenticateWithWebAuthFlow(clientId, interactive = true) {
   const redirectUri = chrome.identity.getRedirectURL();
   const scopeString = encodeURIComponent(YOUTUBE_OAUTH_SCOPES.join(' '));
+  // For interactive login, allow account selection; for silent background refresh, omit prompt to allow session cookie reuse
   const promptParam = interactive ? '&prompt=select_account%20consent' : '';
   const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${encodeURIComponent(
     clientId
@@ -91,7 +108,11 @@ export async function authenticateWithWebAuthFlow(clientId, interactive = true) 
     }
 
     const expiryTime = Date.now() + (parseInt(expiresIn || '3600', 10) * 1000);
-    await chrome.storage.local.set({ activeToken: accessToken, tokenExpiry: expiryTime });
+    await chrome.storage.local.set({ 
+      activeToken: accessToken, 
+      tokenExpiry: expiryTime,
+      hasSignedIn: true 
+    });
 
     // Pre-fetch and cache user profile in local storage
     try {
@@ -123,7 +144,7 @@ export async function clearAuthSession() {
   }
 
   await chrome.storage.sync.remove(['customToken']);
-  await chrome.storage.local.remove(['activeToken', 'tokenExpiry', 'cachedPlaylists', 'userProfile']);
+  await chrome.storage.local.remove(['activeToken', 'tokenExpiry', 'cachedPlaylists', 'userProfile', 'hasSignedIn']);
 }
 
 /**
@@ -136,10 +157,25 @@ async function youtubeFetch(endpoint, token, options = {}) {
     ...(options.headers || {})
   };
 
-  const response = await fetch(`${YOUTUBE_API_BASE}${endpoint}`, {
+  let response = await fetch(`${YOUTUBE_API_BASE}${endpoint}`, {
     ...options,
     headers
   });
+
+  // If token expired mid-session (401), attempt a silent refresh and retry once
+  if (response.status === 401 && !options._isRetry) {
+    try {
+      const refreshedToken = await getAccessToken(false);
+      if (refreshedToken && refreshedToken !== token) {
+        return await youtubeFetch(endpoint, refreshedToken, {
+          ...options,
+          _isRetry: true
+        });
+      }
+    } catch (refreshErr) {
+      console.warn('Auto-refresh on 401 failed:', refreshErr);
+    }
+  }
 
   if (response.status === 204) {
     return { success: true };

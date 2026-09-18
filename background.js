@@ -13,9 +13,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         const settings = await chrome.storage.sync.get(['customClientId']);
         const clientId = (settings.customClientId && settings.customClientId.trim()) || DEFAULT_CLIENT_ID;
         const token = await authenticateWithWebAuthFlow(clientId, message.interactive ?? true);
-        sendResponse({ success: true, token });
       } catch (err) {
-        console.error('Background authentication error:', err);
+        if (message.interactive) {
+          console.error('Background authentication error:', err);
+        } else {
+          console.warn('Silent token renewal could not complete without user interaction:', err?.message || err);
+        }
         sendResponse({ success: false, error: err.message });
       }
     })();
