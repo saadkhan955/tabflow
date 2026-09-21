@@ -71,8 +71,8 @@ export async function getAccessToken(interactive = true) {
 export async function authenticateWithWebAuthFlow(clientId, interactive = true) {
   const redirectUri = chrome.identity.getRedirectURL();
   const scopeString = encodeURIComponent(YOUTUBE_OAUTH_SCOPES.join(' '));
-  // For interactive login, allow account selection; for silent background refresh, omit prompt to allow session cookie reuse
-  const promptParam = interactive ? '&prompt=select_account%20consent' : '';
+  // For interactive login, allow account selection; for silent background refresh, use prompt=none
+  const promptParam = interactive ? '&prompt=select_account%20consent' : '&prompt=none';
   const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${encodeURIComponent(
     clientId
   )}&response_type=token&redirect_uri=${encodeURIComponent(
@@ -80,10 +80,19 @@ export async function authenticateWithWebAuthFlow(clientId, interactive = true) 
   )}&scope=${scopeString}${promptParam}`;
 
   try {
-    const responseUrl = await chrome.identity.launchWebAuthFlow({
+    const flowOptions = {
       url: authUrl,
       interactive
-    });
+    };
+
+    // For non-interactive flows: prevent early abort on initial page load
+    // and allow asynchronous client-side redirects from Google Accounts.
+    if (!interactive) {
+      flowOptions.abortOnLoadForNonInteractive = false;
+      flowOptions.timeoutMsForNonInteractive = 8000;
+    }
+
+    const responseUrl = await chrome.identity.launchWebAuthFlow(flowOptions);
 
     if (!responseUrl) {
       throw new Error('Authentication flow was cancelled or returned empty.');
