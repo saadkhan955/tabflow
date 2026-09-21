@@ -571,7 +571,13 @@ async function checkAuth(interactive = false) {
   try {
     const token = await getAccessToken(interactive);
     if (!token) {
-      updateAuthUI(false);
+      const local = await chrome.storage.local.get(['hasSignedIn', 'userProfile', 'userEmail']);
+      if (local.hasSignedIn && local.userProfile) {
+        state.userProfile = local.userProfile;
+        updateAuthUI(false, true);
+      } else {
+        updateAuthUI(false, false);
+      }
       return;
     }
 
@@ -602,7 +608,7 @@ async function checkAuth(interactive = false) {
   } catch (err) {
     state.authToken = null;
     state.userProfile = null;
-    updateAuthUI(false);
+    updateAuthUI(false, false);
 
     if (interactive) {
       if (err.message === 'MISSING_CLIENT_ID' || err.code === 'MISSING_CLIENT_ID' || err.message.includes('OAuth2 client id')) {
@@ -615,9 +621,12 @@ async function checkAuth(interactive = false) {
   }
 }
 
-function updateAuthUI(isAuthenticated) {
+function updateAuthUI(isAuthenticated, needsReconnect = false) {
+  const authNoticeText = document.getElementById('authNoticeText');
+  const btnSignInText = document.getElementById('btnSignInText');
+
   if (isAuthenticated) {
-    const title = state.userProfile?.title || 'Google Account';
+    const title = state.userProfile?.title || state.userProfile?.email || 'Google Account';
     elements.authStatusText.textContent = title;
     elements.authRequiredNotice.classList.add('hidden');
     elements.playlistSelectSection.classList.remove('hidden');
@@ -625,7 +634,27 @@ function updateAuthUI(isAuthenticated) {
     elements.settingsUserProfile.classList.remove('hidden');
     elements.settingsSignInArea.classList.add('hidden');
     elements.userName.textContent = title;
-    elements.userSubText.textContent = 'Connected to YouTube';
+    elements.userSubText.textContent = state.userProfile?.email || 'Connected to YouTube';
+    if (state.userProfile?.avatar) {
+      elements.userAvatar.src = state.userProfile.avatar;
+    }
+  } else if (needsReconnect) {
+    const name = state.userProfile?.title || 'Account';
+    elements.authStatusText.textContent = `${name} (Session expired)`;
+    elements.authRequiredNotice.classList.remove('hidden');
+    elements.playlistSelectSection.classList.add('hidden');
+
+    if (authNoticeText) {
+      authNoticeText.textContent = `Session expired for ${name}. Click below to reconnect:`;
+    }
+    if (btnSignInText) {
+      btnSignInText.textContent = 'Reconnect Google Account';
+    }
+
+    elements.settingsUserProfile.classList.remove('hidden');
+    elements.settingsSignInArea.classList.remove('hidden');
+    elements.userName.textContent = name;
+    elements.userSubText.textContent = 'Session expired — click Reconnect';
     if (state.userProfile?.avatar) {
       elements.userAvatar.src = state.userProfile.avatar;
     }
@@ -633,6 +662,13 @@ function updateAuthUI(isAuthenticated) {
     elements.authStatusText.textContent = 'Ready (Sign in or Instant Queue)';
     elements.authRequiredNotice.classList.remove('hidden');
     elements.playlistSelectSection.classList.add('hidden');
+
+    if (authNoticeText) {
+      authNoticeText.textContent = 'Sign in with Google to load your YouTube playlists';
+    }
+    if (btnSignInText) {
+      btnSignInText.textContent = 'Sign In with Google';
+    }
 
     elements.settingsUserProfile.classList.add('hidden');
     elements.settingsSignInArea.classList.remove('hidden');

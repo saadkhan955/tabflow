@@ -6,7 +6,8 @@ export const DEFAULT_CLIENT_ID = '1079325521032-4hknl2lcu2936mseomrfd09j27uq8ghl
 const YOUTUBE_API_BASE = 'https://www.googleapis.com/youtube/v3';
 const YOUTUBE_OAUTH_SCOPES = [
   'https://www.googleapis.com/auth/youtube',
-  'https://www.googleapis.com/auth/youtube.force-ssl'
+  'https://www.googleapis.com/auth/youtube.force-ssl',
+  'email'
 ];
 
 /**
@@ -19,10 +20,13 @@ export async function getAccessToken(interactive = true) {
     return settings.customToken.trim();
   }
 
-  // 2. Check cached valid token in local storage (with a 5-minute safety buffer)
-  const local = await chrome.storage.local.get(['activeToken', 'tokenExpiry', 'hasSignedIn']);
-  const bufferMs = 5 * 60 * 1000; // 5 minutes before actual expiry
-  if (local.activeToken && local.tokenExpiry && (Date.now() + bufferMs) < local.tokenExpiry) {
+  // 2. Check cached valid token in local storage
+  const local = await chrome.storage.local.get(['activeToken', 'tokenExpiry', 'hasSignedIn', 'userEmail']);
+  const now = Date.now();
+  const bufferMs = 5 * 60 * 1000; // 5 minutes proactive refresh window before actual expiry
+
+  // If token is securely before the proactive refresh window, use token immediately
+  if (local.activeToken && local.tokenExpiry && (now + bufferMs) < local.tokenExpiry) {
     return local.activeToken;
   }
 
@@ -34,7 +38,13 @@ export async function getAccessToken(interactive = true) {
         return response.token;
       }
     } catch {
-      // Silent refresh message failed, will try interactive if requested
+      // Silent refresh message failed
+    }
+
+    // Graceful fallback: If silent renewal could not complete without interaction, but current token
+    // has not actually expired yet (now < local.tokenExpiry), continue using it!
+    if (local.activeToken && local.tokenExpiry && now < local.tokenExpiry) {
+      return local.activeToken;
     }
   }
 
@@ -71,13 +81,18 @@ export async function getAccessToken(interactive = true) {
 export async function authenticateWithWebAuthFlow(clientId, interactive = true) {
   const redirectUri = chrome.identity.getRedirectURL();
   const scopeString = encodeURIComponent(YOUTUBE_OAUTH_SCOPES.join(' '));
+
+  // Retrieve stored user email to supply login_hint for silent renewal
+  const local = await chrome.storage.local.get(['userEmail']);
+  const loginHintParam = local.userEmail ? `&login_hint=${encodeURIComponent(local.userEmail)}` : '';
+
   // For interactive login, allow account selection; for silent background refresh, use prompt=none
   const promptParam = interactive ? '&prompt=select_account%20consent' : '&prompt=none';
   const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${encodeURIComponent(
     clientId
   )}&response_type=token&redirect_uri=${encodeURIComponent(
     redirectUri
-  )}&scope=${scopeString}${promptParam}`;
+  )}&scope=${scopeString}${promptParam}${loginHintParam}&include_granted_scopes=true`;
 
   try {
     const flowOptions = {
@@ -123,11 +138,14 @@ export async function authenticateWithWebAuthFlow(clientId, interactive = true) 
       hasSignedIn: true 
     });
 
-    // Pre-fetch and cache user profile in local storage
+    // Pre-fetch and cache user profile & email in local storage
     try {
       const profile = await fetchUserProfile(accessToken);
       if (profile) {
         await chrome.storage.local.set({ userProfile: profile });
+        if (profile.email) {
+          await chrome.storage.local.set({ userEmail: profile.email });
+        }
       }
     } catch (profErr) {
       console.warn('Could not prefetch user profile:', profErr);
@@ -153,7 +171,7 @@ export async function clearAuthSession() {
   }
 
   await chrome.storage.sync.remove(['customToken']);
-  await chrome.storage.local.remove(['activeToken', 'tokenExpiry', 'cachedPlaylists', 'userProfile', 'hasSignedIn']);
+  await chrome.storage.local.remove(['activeToken', 'tokenExpiry', 'cachedPlaylists', 'userProfile', 'hasSignedIn', 'userEmail']);
 }
 
 /**
@@ -204,15 +222,18 @@ async function youtubeFetch(endpoint, token, options = {}) {
 }
 
 /**
- * Fetch authenticated user channel information
+ * Fetch authenticated user channel information and email
  */
 export async function fetchUserProfile(token) {
   if (!token) return null;
+  let profile = null;
+
+  // 1. Fetch channel snippet and statistics from YouTube Data API
   try {
     const data = await youtubeFetch('/channels?part=snippet,statistics&mine=true', token);
     if (data.items && data.items.length > 0) {
       const channel = data.items[0];
-      return {
+      profile = {
         id: channel.id,
         title: channel.snippet.title,
         avatar: channel.snippet.thumbnails?.default?.url || '',
@@ -222,7 +243,31 @@ export async function fetchUserProfile(token) {
   } catch (err) {
     console.warn('Could not fetch user profile details:', err);
   }
-  return null;
+
+  // 2. Fetch user email from Google UserInfo endpoint (using email scope)
+  try {
+    const userInfoRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (userInfoRes.ok) {
+      const userInfo = await userInfoRes.json();
+      if (userInfo?.email) {
+        if (!profile) {
+          profile = {
+            id: userInfo.sub,
+            title: userInfo.name || userInfo.email,
+            avatar: userInfo.picture || ''
+          };
+        }
+        profile.email = userInfo.email;
+        await chrome.storage.local.set({ userEmail: userInfo.email });
+      }
+    }
+  } catch (err) {
+    console.debug('Could not fetch user email info:', err);
+  }
+
+  return profile;
 }
 
 /**

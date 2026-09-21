@@ -18,9 +18,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         if (message.interactive) {
           console.error('Background authentication error:', err);
         } else {
-          console.warn('Silent token renewal could not complete without user interaction:', err?.message || err);
+          // Expected when session cookie expired or Google requests account confirmation
+          console.debug('Silent token renewal needs user interaction:', err?.message || err);
         }
-        sendResponse({ success: false, error: err.message });
+        sendResponse({ success: false, error: err.message, code: 'INTERACTION_REQUIRED' });
       }
     })();
     return true; // Keep message channel open for async response
